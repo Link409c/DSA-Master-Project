@@ -1,6 +1,7 @@
 package Dog;
 
-import java.util.*;
+import java.util.ArrayList;
+
 public class TestDog {
     public static void main (String args[]){
         //create a new dog object

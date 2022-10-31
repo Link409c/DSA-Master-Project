@@ -4,6 +4,8 @@ public class MovingX {
     //global variables
     private int rowsN, columnsM;
 
+    public MovingX(){};
+
     //Write a constructor that will populate those two global variables.
     public MovingX(int aRows, int aColumns) {
         rowsN = aRows;
@@ -121,5 +123,13 @@ public class MovingX {
             foundX = false;
             //loop for the amount of times required to show movement of the x in the grid
         } while (r > 0);
+    }
+
+    public void runFor(){
+        forLoopGrid();
+    }
+
+    public void runArray(){
+        arrayGrid();
     }
 }

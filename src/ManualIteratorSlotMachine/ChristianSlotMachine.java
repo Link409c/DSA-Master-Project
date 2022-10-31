@@ -1,9 +1,16 @@
 package ManualIteratorSlotMachine;
 
+import java.util.Iterator;
+import java.util.Random;
 
-public class ChristianSlotMachine implements ChristianIterator<E> {
+public class ChristianSlotMachine<T> implements Iterable<T> {
 
 	private int coins;
+
+	@Override
+	public Iterator<T> iterator() {
+		return null;
+	}
 	
 	public ChristianSlotMachine() {}
 	
@@ -20,55 +27,38 @@ public class ChristianSlotMachine implements ChristianIterator<E> {
 	}
 
 	//move to the next object in the list aka spin / pull
-	@Override
-	public void next() {
-		//counter for pulls
-		int pullCounter = 0;
-		//if you have coins (hasnext)
-		while(hasNext()){
-			//spin the slot machine
-			pull();
-			pullCounter++;
-		}
-		System.out.println("You are out of coins! You played " + pullCounter + " times.");
-	}
-
-	@Override
-	public void remove() {
-		//remove a coin if result of pull is loss
-		setCoins(getCoins()-1);
-	}
 
 	public void add(){
 		//add 2 coins if the result of pull is win
 		setCoins(getCoins()+2);
 	}
 
-	@Override
-	public boolean hasNext() {
-		if(getCoins() > 0) {
-			return true;
-		}else {
-			return false;
-		}
-	}
 
-	public boolean pull(){
+	public void pull(){
+		//random object to use for calculations
+		Random r = new Random();
 		//win flag
 		boolean didIWin = false;
 		//probability to win is 25%
 		//randomly generate a number between 1 and 4, the result must be 4 to win
-		didIWin = random.nextInt(1, 4);
+		int randomNumber =  r.nextInt(1, 5);
+		if(randomNumber == 4){
+			didIWin = true;
+		}
 		if(didIWin){
 			//if you win, you get 2 coins
 			add();
 			System.out.println("You won! +2 Coins.");
 		}
 		else{
-			remove();
+			//remove();
 			System.out.println("You lose! -1 Coin.");
 		}
-		return didIWin;
 	}
+
+	public void run(){
+		//next();
+	}
+
 
 }
