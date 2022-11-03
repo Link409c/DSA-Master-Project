@@ -9,7 +9,6 @@ public class Item{
     private String description;
 
     public Item(){
-
     }
 
     public Item(ItemType type, String name, String description) {
@@ -41,5 +40,7 @@ public class Item{
     public void setDescription(String description) {
         this.description = description;
     }
+
+
 
 }

@@ -3,5 +3,5 @@ package DungeonProject;
 public enum MonsterType {
 
     //listed in order of spawn probability.
-    Slime, Bat, Goblin, Skeleton, Zombie, Orc, Minotaur, Dragon, TreasureLizard
+    Slime, Bat, Skeleton, Zombie, Goblin, Lizardman, Orc, Minotaur, Dragon, TreasureLizard
 }

@@ -16,16 +16,21 @@ public interface PlayerInterface {
     //the player can enter a cheat.
     void cheat();
 
-    //get the inventory
+    //get the items of the passed item type
     //print the inventory
-    //prompt if they want to use an item or return
-    //call useItem method if needed
-    void checkInventory();
+    //return the new inventory to be used in other methods
+    ChristianHolder<Item> checkInventory(ChristianHolder<Item> inventory, ItemType itemType);
 
     //get the inventory
     //search the inventory for the item
-    //if it exists, remove the item and return the object
-    Item useItem(ChristianHolder<Item> inventory, String itemName);
+    //if it exists, call the use method of that item
+    Item useItem(ChristianHolder<Item> inventory, String anItem);
+
+    //prints the details of an item.
+    void checkItem(ChristianHolder<Item> inventory, String anItem);
+
+    //removes an item object from the player inventory.
+    public void dropItem(ChristianHolder<Item> inventory, String anItem);
 
     //check to see if a weapon is equipped, and apply its effects if so
     boolean hasWeapon(Equipment[] e, int i);

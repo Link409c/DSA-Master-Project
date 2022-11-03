@@ -6,7 +6,7 @@ package ManualLinkedList;
  * @version 10/31/2022
  * This program is an exercise made to build our skill set in understanding Data Structures, specifically the
  * List class and its different forms. In particular, this class is made to emulate the Linked List structure.
- **************************************************************************************************************/
+ ***************************************************************************************************************/
 public class ChristianHolder<E>
 {
    //global variables
@@ -182,7 +182,6 @@ public class ChristianHolder<E>
         setTail(toAdd);
         //set the current node next reference to the added node
         temp1.setNext(toAdd);
-
     }
 
     public void removeFromPos(int aPosition){

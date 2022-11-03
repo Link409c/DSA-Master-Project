@@ -2,13 +2,47 @@ package DungeonProject;
 
 import ManualLinkedList.ChristianHolder;
 
+import java.io.File;
+
 public interface GameInterface {
 
     //run the game
     void run();
 
-    //create the objects needed and start the gameplay
-    void startGame();
+    //prints the introduction script
+    void introScript();
+
+    //prints the end of game script
+    void endGameScript(int aFloor);
+
+    //prints the script when you clear the final floor
+    void victoryScript();
+
+    //create the objects needed and start a new game
+    void newGame();
+
+    //create a new dungeon when the player continues after dying
+    void continueGame(Player thePlayer);
+
+    //continue a game from a save file
+    void continueFromSave(File afile);
+
+    //generate rooms for a floor of the dungeon based on floor number
+    ChristianHolder<Room> generateRooms(int aFloor);
+
+    //generate items for a floor of the dungeon based on floor number
+    ChristianHolder<Item> generateItems(int aFloor, int dungeonSize);
+
+    //generate monsters for a floor of the dungeon based on floor number and player level
+    ChristianHolder<Monster> generateMonsters(int aFloor, int aLevel, int dungeonSize);
+
+    //populate the rooms of the dungeon with the items, monsters, and make one the exit
+    ChristianHolder<Room> populateDungeon(ChristianHolder<Item> items, ChristianHolder<Monster> monsters,
+                                          int dungeonSize);
+
+    //menu that controls the game outside of gameplay
+    //can begin new game, continue, select options, or view the manual
+    void mainMenu();
 
     //control the game when not in battle
     /* move between rooms, check current room, check status, check
@@ -21,6 +55,10 @@ public interface GameInterface {
     //control the game when in battle
     //attack, defend, use item, or run
     void battleMenu(Player p, Monster m);
+
+    //control the inventory
+    //player can print inventory by item type, use items, and drop items.
+    void inventoryMenu(Player p, ChristianHolder<Item> anInventory);
 
     //when the player finds the exit, move to the next level
     void progressNextLevel();

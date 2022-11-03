@@ -30,10 +30,10 @@ public class Potion extends Item{
     public void use(Player p){
         if(p.getCurrHealthPoints() != p.getMaxHealthPoints()) {
             p.setCurrHealthPoints(p.getCurrHealthPoints() + getHealValue());
-            p.getInventory().removeValue(this);
         }
         else{
             System.out.println("HP is at Max.");
+            p.getInventory().add(this);
         }
     }
 }

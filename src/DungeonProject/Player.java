@@ -1,7 +1,6 @@
 package DungeonProject;
 
 import ManualLinkedList.ChristianHolder;
-import ManualLinkedList.Node;
 
 public class Player extends Being implements PlayerInterface {
 
@@ -164,29 +163,52 @@ public class Player extends Being implements PlayerInterface {
     }
 
     /**
-     * checkInventory method gets the player inventory, prints it for the user, and
-     * prompts the user for input. if they want to use an item, they will input the
-     * name of the item to be passed to the use item method. if not, the program returns
-     * to whatever method it was in prior.
+     * checkInventory method gets the player inventory, and based on the player input, prints
+     * those items out for the player.
+     * @param inventory the player inventory.
+     * @param itemType the type of item to print the inventory of.
+     * @return Returns the inventory of the selected items.
      */
     @Override
-    public void checkInventory() {
-        ChristianHolder<Item> currentInventory = getInventory();
-        Item anItem = currentInventory.getHead().getE();
-        if(anItem == null){
-            System.out.println("Inventory is empty.");
+    public ChristianHolder<Item> checkInventory(ChristianHolder<Item> inventory, ItemType itemType) {
+        //make a new item list
+        ChristianHolder<Item> newInventory = new ChristianHolder<>();
+        int inventorySize = inventory.getSize();
+        for(int i = 0; i < inventorySize; i++){
+            Item temp = inventory.findPosition(i).getE();
+            //populate it with item objects of the given type
+            if(temp.getType() == itemType){
+                newInventory.add(temp);
+            }
         }
-
+        //print the items of the selected type
+        newInventory.printHolder();
+        //return the section of the inventory to be used by other methods
+        return newInventory;
     }
 
     /**
-     * @param inventory
-     * @return
+     * useItem is called when the user enters the input for the use item case in the inventory menu.
+     * The method will search the inventory for an item, and when that item is found, the method returns that item.
+     * the item's use method will be called. otherwise, the method returns null.
+     * @param inventory the player inventory LL Object.
+     * @param anItem the item to look for.
+     * @return Returns an Item object.
      */
     @Override
-    public Item useItem(ChristianHolder<Item> inventory, String itemName) {
-        return null;
+    public Item useItem(ChristianHolder<Item> inventory, String anItem) {
+        inventory.
+        return inventory.findValue(anItem).getE();
     }
+
+    @Override
+    public void checkItem(ChristianHolder<Item> inventory, String anItem){
+        Item toFind = inventory.findValue(anItem).getE();
+        System.out.println(toFind.getDescription());
+    }
+
+    @Override
+    public void dropItem(ChristianHolder<Item> inventory, String anItem){}
 
 
     /**

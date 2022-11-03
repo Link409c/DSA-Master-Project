@@ -2,6 +2,7 @@ package ManualLinkedList;
 
 public class Node<E>{
 
+    //object held by the node
     private E e;
 
     //holds references to next and previous nodes
