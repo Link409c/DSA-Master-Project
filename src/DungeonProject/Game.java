@@ -21,6 +21,9 @@ public class Game implements GameInterface{
     //linked list of items
     private ChristianHolder<Item> dungeonItems;
 
+    //the current floor the player is on
+    private int currentFloor;
+
     //getters and setters
 
     public Game(){
@@ -28,11 +31,15 @@ public class Game implements GameInterface{
     }
 
     public Game(ChristianHolder<Room> dungeon, Player thePlayer, ChristianHolder<Monster> dungeonMonsters,
-                ChristianHolder<Item> dungeonItems) {
+                ChristianHolder<Item> dungeonItems, int currentFloor) {
         this.dungeon = dungeon;
         this.thePlayer = thePlayer;
         this.dungeonMonsters = dungeonMonsters;
         this.dungeonItems = dungeonItems;
+        this.currentFloor = currentFloor;
+    }
+    public ChristianHolder<Room> getDungeon() {
+        return dungeon;
     }
 
     public void setDungeon(ChristianHolder<Room> dungeon) {
@@ -63,23 +70,21 @@ public class Game implements GameInterface{
         this.dungeonItems = dungeonItems;
     }
 
-    public ChristianHolder<Room> getDungeon() {
-        return dungeon;
+    public int getCurrentFloor(){
+        return currentFloor;
+    }
+
+    public void setCurrentFloor(int currentFloor){
+        this.currentFloor = currentFloor;
     }
 
 
     /**
-     * Run is a container method for calling all the game methods and
-     * in essence, "running" the game.
+     * Run is a container method for starting the game. It calls the main menu method
+     * in order for the user to begin playing.
      */
     public void run(){
-        //create the objects needed to play the game
-        //newGame method creates player, monsters, items, and dungeon, starting a new game
-        newGame();
-        /* continueFromSave method uses the information saved in a file
-         * to allow the player to progress from a save. */
-        //continueFromSave();
-
+        mainMenu();
     }
 
     /**
@@ -96,19 +101,77 @@ public class Game implements GameInterface{
     }
 
     /**
-     * @param aFloor
+     * continueScript method holds a variety of scripts to print randomly when
+     * a player continues the game after a game over occurs, or when they progress
+     * to a new floor of the dungeon.
      */
-    @Override
-    public void endGameScript(int aFloor) {
-
+    public void continueScript(){
+        //generate a random number
+        Random r = new Random();
+        int getScript = r.nextInt(1, 6);
+        switch(getScript){
+            case 1 ->{
+                System.out.println("Maybe this time, you'll get lucky.");
+            }
+            case 2 ->{
+                System.out.println("They say if you're encountering enemies, " +
+                        "you're headed in the right direction.");
+            }
+            case 3 ->{
+                System.out.println("I hope there's still some floor chicken.");
+            }
+            case 4 ->{
+                System.out.println("If you're having trouble with the skeletons, " +
+                        "try asking them what their favorite snack is.");
+            }
+            case 5 ->{
+                System.out.println("Call the Nintendo Power Hotline for live gaming tips at " +
+                        "425-885-7529! ($1.49 per minute)");
+            }
+            case 6 ->{
+                System.out.println("Aren't there any cheats for this game?");
+            }
+        }
     }
 
     /**
-     *
+     * endGameScript method holds a script enticing the player to keep playing. it
+     * prints the script based on the floor the player has reached at the end of a
+     * game when called.
+     */
+    @Override
+    public void endGameScript() {
+        int aFloor = getCurrentFloor();
+        if(aFloor < 10){
+            System.out.println("The depth you've achieved is but the surface of this " +
+                    "deep and twisting labyrinth.");
+        }
+        else if(aFloor >= 11 && aFloor < 30){
+            System.out.println("You fought well, and delved far. But much lies " +
+                            "deeper within the dungeon.");
+        }
+        else if(aFloor >= 31 && aFloor < 50){
+            System.out.println("Your skills have brought you far, your strength led you " +
+                    "to victory against many enemies, and your sense of adventure uncovered "
+                     + "much. However, still more awaits.");
+        }
+        else if(aFloor >= 51 && aFloor < 90){
+            System.out.println("There is little more to say of your success! A great adventurer " +
+                    "such as you has what it takes to reach what lies at the very core of these "
+                     + "catacombs. Soon, it will be within your reach...");
+        }
+        else if(aFloor >= 91 && aFloor <= 98){
+            System.out.println("You're nearly there! The nadir of this labyrinth is just below.");
+        }
+    }
+
+    /**
+     * victoryScript method holds a script that is printed when the player clears the
+     * final floor of the dungeon.
      */
     @Override
     public void victoryScript() {
-
+        //code
     }
 
 
@@ -117,15 +180,16 @@ public class Game implements GameInterface{
      * it will use the current floor to determine the maximum number of rooms the
      * dungeon can have. the number of rooms will be randomized in order to create
      * a different experience each time the game is played.
-     * @param aFloor the current floor of the dungeon.
      * @return returns a list of room objects.
      */
     @Override
-    public ChristianHolder<Room> generateRooms(int aFloor) {
+    public ChristianHolder<Room> generateRooms() {
         //create list to return
         ChristianHolder<Room> theRooms = new ChristianHolder<>();
         //create variable for max rooms
         int maxRooms;
+        //get current floor of the dungeon
+        int aFloor = getCurrentFloor();
         //if first floor, make limit 10
         if(aFloor == 1){
             maxRooms = 10;
@@ -154,14 +218,16 @@ public class Game implements GameInterface{
      * is created (Usable items, Equipment (Weapon, Armor, Accessory), with the limit
      * being determined by the floor and dungeon size only. Key items will be added in
      * a later version.
-     * @param aFloor the current floor of the dungeon.
-     * @param dungeonSize the number of rooms in the current floor.
      * @return returns a list of items.
      */
     @Override
-    public ChristianHolder<Item> generateItems(int aFloor, int dungeonSize) {
+    public ChristianHolder<Item> generateItems() {
         //create list to return
         ChristianHolder<Item> anItems = new ChristianHolder<>();
+        //get current floor of the dungeon
+        int aFloor = getCurrentFloor();
+        //get dungeon size
+        int dungeonSize = getDungeon().getSize();
         //create variable for max items
         int maxItems;
         //to avoid an overabundance of items, limit the amount
@@ -180,19 +246,22 @@ public class Game implements GameInterface{
      * Rooms. the method will create a number of monsters dependent on the current floor, the
      * player level, and the number of rooms, with a random amount generated not to exceed the
      * room count of the floor.
-     * @param aFloor the current floor of the dungeon.
-     * @param aLevel the current level of the player.
-     * @param dungeonSize the number of rooms in the current floor.
      * @return Returns a list of monsters.
      */
     @Override
-    public ChristianHolder<Monster> generateMonsters(int aFloor, int aLevel, int dungeonSize) {
+    public ChristianHolder<Monster> generateMonsters() {
         //create list to return
         ChristianHolder<Monster> theMonsters = new ChristianHolder<>();
         //create variable for max monsters
         int maxMonsters;
+        //get current floor of the dungeon
+        int aFloor = getCurrentFloor();
+        //get player level
+        int playerLevel = getThePlayer().getLevel();
+        //get dungeon size
+        int dungeonSize = getDungeon().getSize();
         //to avoid an overabundance of monsters, limit the amount
-        //we want to give the player a chance
+        //we want to give the player a chance (until we don't)
         //half of size multiplied by floor number
         maxMonsters = (dungeonSize / 2) * aFloor;
         //limit monster types by section (scarier monsters deeper in the dungeon)
@@ -205,77 +274,162 @@ public class Game implements GameInterface{
         return theMonsters;
     }
 
-
+    /**
+     * the populateDungeon method uses the player object, items list, and monsters list to
+     * randomly assign the objects to rooms in the dungeon. The player will always enter a
+     * new floor in the middle of the dungeon. The exit will also be placed randomly, and
+     * the method accounts for player position so that there will not be a monster at the
+     * entry room and that room will also never be the exit.
+     * @param items the linked list of items passed in.
+     * @param monsters the linked list of monsters passed in.
+     */
     @Override
-    public ChristianHolder<Room> populateDungeon(ChristianHolder<Item> items, ChristianHolder<Monster> monsters,
-                                                 int dungeonSize) {
-        //create the dungeon to return
-        ChristianHolder<Room> populatedDungeon = new ChristianHolder<>();
+    public void populateDungeon(ChristianHolder<Item> items, ChristianHolder<Monster> monsters) {
+        //calculate the middle room of the dungeon
+        int playerEntry = getDungeon().getSize() / 2;
         //place the player object into the middle of the dungeon
-        //get the middle room of the list using for loop
+        getDungeon().findPosition(playerEntry).getE().setThePlayer(getThePlayer());
+        //make variable for upper bound of random int generation for exit
+        int bound = getDungeon().getSize() + 1;
         //make a random room the exit
-        /* the exit should not be at the player's starting position,
-         * and should be at least two rooms away in either direction */
-        //while both lists head nodes are not null,
-            //for loop places monsters in rooms
-            //do not place a monster in the player's starting room
-            //for loop places items in rooms
-            //items are fine to put at the start.
-        return populatedDungeon;
+        Random r = new Random();
+        int exitPos = r.nextInt(0, bound);
+        /* the exit should not be at the player's starting position, and should be at least
+         * two rooms away in either direction as long as size allows. */
+        while(exitPos == playerEntry || exitPos == playerEntry + 1 || exitPos == playerEntry - 1){
+            exitPos = r.nextInt(0, bound);
+        }
+        //set the exit
+        getDungeon().findPosition(exitPos).getE().setTheExit(true);
+        //variable for room number to set objects in
+        int objectPos;
+        //variable for room
+        Room temp;
+        //array holds room numbers to exclude from random generation after they are used
+        int[] roomNumbers = new int[monsters.getSize()];
+        //for loop places monsters in rooms
+        for(int i = 0; i < monsters.getSize(); i++){
+            objectPos = r.nextInt(0, bound);
+            //put this generated position in the array
+            roomNumbers[i] = objectPos;
+            /* during each add step check to make sure this room's enemy
+             * object has not already been populated */
+            for (int roomNumber : roomNumbers) {
+                //if it was already, generate a new random object position number
+                if (roomNumber == objectPos) {
+                    objectPos = r.nextInt(0, bound);
+                }
+            }
+            //generate temp node to check if it is this floor's entrance
+            temp = getDungeon().findPosition(objectPos).getE();
+            //do not place a monster in the floor's entrance room
+            if(temp.getThePlayer() == null){
+                //populate the enemy object in this room
+                getDungeon().findPosition(objectPos).getE().setEnemy(monsters.removeEnd().getE());
+            }
+        }
+        roomNumbers = new int[items.getSize()];
+        for(int i = 0; i < items.getSize(); i++){
+            roomNumbers[i] = i;
+        }
+        //for loop places items in rooms
+        //items are fine to put at the start.
+        for(int i = 0; i < items.getSize(); i++){
+            objectPos = r.nextInt(0, bound);
+            //put this generated position in the array
+            roomNumbers[i] = objectPos;
+            /* during each add step check to make sure this room's reward
+             * object has not already been populated */
+            for (int roomNumber : roomNumbers) {
+                //if it was already, generate a new random object position number
+                if (roomNumber == objectPos) {
+                    objectPos = r.nextInt(0, bound);
+                }
+            }
+            //populate the reward object in this room
+            getDungeon().findPosition(objectPos).getE().setTreasure(items.removeEnd().getE());
+        }
     }
 
     /**
-     *
+     * mainMenu method controls the game outside of gameplay. the user can start a new game,
+     * continue from a save file, or change several options.
      */
     @Override
     public void mainMenu() {
-
+        //code
     }
 
     /**
-     * newGame method will construct the player object, construct the dungeon object,
-     * construct the Monsters List, and construct the Item List. It will populate the
-     * starting room with the player object, randomly populate the rooms of the dungeon
-     * with items and monsters, and assign one room as the exit. Finally, it will call the
-     * dungeonMenu method in order to allow the player to start playing.
+     * createGame method will construct the dungeon object, construct the Monsters List,
+     * and construct the Item List. It will populate the starting room with the player
+     * object, randomly populate the rooms of the dungeon with items and monsters, and
+     * assign one room as the exit. Finally, it will call the dungeonMenu method in order
+     * to allow the player to start playing.
      */
-    public void newGame(){
-        //introduction
-        introScript();
-        System.out.println("To begin, let's create your character.");
-        System.out.println("Enter your name: ");
-        //construct the player object with user input
-        Scanner in = new Scanner(System.in);
-        String yourName = in.nextLine();
-        Player player = new Player(yourName);
-        setThePlayer(player);
-        //set current floor to 1 for new game
-        int currentFloor = 1;
+    public void createGame(){
         //create the dungeon
         System.out.println("Constructing the Dungeon...");
-        ChristianHolder<Room> theDungeon = generateRooms(currentFloor);
+        ChristianHolder<Room> theDungeon = generateRooms();
+        setDungeon(theDungeon);
         //randomly generate monsters to add to the dungeon
         System.out.println("Spawning a horde of terrible monsters...");
-        ChristianHolder<Monster> theMonsters = generateMonsters(currentFloor,
-                getThePlayer().getLevel(), theDungeon.getSize());
+        ChristianHolder<Monster> theMonsters = generateMonsters();
+        //set the global monster list
         setDungeonMonsters(theMonsters);
         //randomly generate items to add to the dungeon
         System.out.println("...which guard untold treasure!");
         System.out.println("Creating items...");
-        ChristianHolder<Item> theItems = generateItems(currentFloor, theDungeon.getSize());
+        ChristianHolder<Item> theItems = generateItems();
+        //set the global item list
+        setDungeonItems(theItems);
         //populate the dungeon with the created objects and player
-        populateDungeon(theItems, theMonsters, theDungeon.getSize());
+        /* the populate dungeon method has a pair of nested for loops to account for
+         * errors in random number generation, so I thought it would be funny to put
+         * a loading message here as it might take longer than expected for the
+         * method to finish working. haha */
+        System.out.println(".   .   .     . . .  ...Loading...  . . .     .   .   .");
+        populateDungeon(theItems, theMonsters);
         System.out.println("Entering the Dungeon...");
         //call dungeon menu method to begin the game
         dungeonMenu();
     }
 
     /**
-     * @param thePlayer
+     * newGame method begins a new Game, starting the player at level one. This method will be called
+     * when 'New Game' is selected by the user at the main menu. The method prompts the user for their
+     * character name, creates a new player object, sets the current floor to 1, and calls the createGame
+     * method to construct the dungeon and begin gameplay.
+     */
+    public void newGame(){
+        //print the intro script
+        introScript();
+        System.out.println("Starting a new game.");
+        //prompt the player for name input
+        Scanner in = new Scanner(System.in);
+        System.out.println("Enter your hero's name: ");
+        String yourName = in.nextLine();
+        //create a new player object using the name
+        //set it as the player
+        setThePlayer(new Player(yourName));
+        //set currentFloor to 1
+        setCurrentFloor(1);
+        //call createGame method
+        createGame();
+    }
+
+    /**
+     * continueGame method is called when the player chooses to continue
+     * after dying or quitting the game. It allows the player to continue
+     * the game starting in a new dungeon, using their previously
+     * attained level, stats, items, equipment, etc.
      */
     @Override
-    public void continueGame(Player thePlayer) {
-
+    public void continueGame() {
+        //print the continue script
+        continueScript();
+        //using the existing player object, continue in a new dungeon
+        createGame();
     }
 
     /**
@@ -287,7 +441,7 @@ public class Game implements GameInterface{
      */
     @Override
     public void continueFromSave(File afile) {
-
+        //code
     }
 
     /**
@@ -421,6 +575,7 @@ public class Game implements GameInterface{
      * @param p the player object currently in the game.
      * @param anInventory the inventory of the player.
      */
+
     public void inventoryMenu(Player p, ChristianHolder<Item> anInventory){
         System.out.println("|-------- INVENTORY --------|");
         //print the inventory menu.
@@ -515,10 +670,17 @@ public class Game implements GameInterface{
             //if yes, exit this floor
                 //increment floors cleared
                 //print the kill count, items collected and floors cleared
-                /* create a new dungeon using player level and floor number
-                as the multiplier for rooms, monsters, and items */
-                //set the dungeon object variable to the new dungeon
-                //return to dungeon menu
+                //if new floor is < 99
+                    //print continueScript
+                    /* create a new dungeon using player level and floor number
+                    as the multiplier for rooms, monsters, and items */
+                    //set the dungeon object variable to the new dungeon
+                    //return to dungeon menu
+                //else if new floor == 99
+                    //create a floor with one room
+                    //no monsters, "item" is a tome with cheat codes in it
+                    //export this as a file so the user can look at it
+                    //print victory script and end game
     }
 
     /**
@@ -531,7 +693,9 @@ public class Game implements GameInterface{
         //change output based on how the method was called
         //player death prints results
         if(getThePlayer().isDead()){
+            getThePlayer().setGamesPlayed(getThePlayer().getGamesPlayed() + 1);
             System.out.println("You died.");
+            System.out.println("You've braved the dungeon " + getThePlayer().getGamesPlayed() + " times.");
             System.out.println("Enemies Killed: " + getThePlayer().getKillCount());
             System.out.println("Items collected: " + getThePlayer().getItemsAcquired());
             System.out.println("Floors Cleared: " + getThePlayer().getFloorsCleared());
@@ -546,7 +710,7 @@ public class Game implements GameInterface{
         quit = in.nextLine();
         //if yes, call continue game method
         if(quit.equalsIgnoreCase("Y") || quit.equalsIgnoreCase("Yes")){
-            continueGame(getThePlayer());
+            continueGame();
         //if no, quit the game
         }else if(quit.equalsIgnoreCase("N") || quit.equalsIgnoreCase("No")){
 

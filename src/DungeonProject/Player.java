@@ -14,6 +14,8 @@ public class Player extends Being implements PlayerInterface {
 
     private int itemsAcquired;
 
+    private int gamesPlayed;
+
     private Equipment[] equipped;
 
     private ChristianHolder<Item> inventory;
@@ -93,6 +95,14 @@ public class Player extends Being implements PlayerInterface {
 
     public void setItemsAcquired(int itemsAcquired) {
         this.itemsAcquired = itemsAcquired;
+    }
+
+    public int getGamesPlayed() {
+        return gamesPlayed;
+    }
+
+    public void setGamesPlayed(int gamesPlayed) {
+        this.gamesPlayed = gamesPlayed;
     }
 
     public Equipment[] getEquipped() {
@@ -197,8 +207,7 @@ public class Player extends Being implements PlayerInterface {
      */
     @Override
     public Item useItem(ChristianHolder<Item> inventory, String anItem) {
-        inventory.
-        return inventory.findValue(anItem).getE();
+        //code
     }
 
     @Override

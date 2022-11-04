@@ -12,33 +12,38 @@ public interface GameInterface {
     //prints the introduction script
     void introScript();
 
+    //prints the script when a player continues after a game over
+    void continueScript();
+
     //prints the end of game script
-    void endGameScript(int aFloor);
+    void endGameScript();
 
     //prints the script when you clear the final floor
     void victoryScript();
+
+    //method to be called by newGame, continueGame, or continueSavedGame
+    void createGame();
 
     //create the objects needed and start a new game
     void newGame();
 
     //create a new dungeon when the player continues after dying
-    void continueGame(Player thePlayer);
+    void continueGame();
 
     //continue a game from a save file
     void continueFromSave(File afile);
 
     //generate rooms for a floor of the dungeon based on floor number
-    ChristianHolder<Room> generateRooms(int aFloor);
+    ChristianHolder<Room> generateRooms();
 
     //generate items for a floor of the dungeon based on floor number
-    ChristianHolder<Item> generateItems(int aFloor, int dungeonSize);
+    ChristianHolder<Item> generateItems();
 
     //generate monsters for a floor of the dungeon based on floor number and player level
-    ChristianHolder<Monster> generateMonsters(int aFloor, int aLevel, int dungeonSize);
+    ChristianHolder<Monster> generateMonsters();
 
     //populate the rooms of the dungeon with the items, monsters, and make one the exit
-    ChristianHolder<Room> populateDungeon(ChristianHolder<Item> items, ChristianHolder<Monster> monsters,
-                                          int dungeonSize);
+    void populateDungeon(ChristianHolder<Item> items, ChristianHolder<Monster> monsters);
 
     //menu that controls the game outside of gameplay
     //can begin new game, continue, select options, or view the manual
