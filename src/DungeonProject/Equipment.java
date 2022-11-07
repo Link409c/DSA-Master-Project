@@ -1,39 +1,16 @@
 package DungeonProject;
 
-import static DungeonProject.ItemType.EQUIPMENT;
-
 public class Equipment extends Item{
 
-    private final ItemType TYPE = EQUIPMENT;
-    private String name;
-    private String description;
+    private EquipmentType equipmentType;
 
-    public Equipment(){
-
+    public Equipment(EquipmentType equipmentType, String name, String description, int attack,
+                     int defense, int speed, int maxHealthPoints, int restore) {
+        super(ItemType.EQUIPMENT, name, description, attack, defense, speed, maxHealthPoints, restore);
+        this.equipmentType = equipmentType;
     }
 
-    public Equipment(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    public ItemType getTYPE() {
-        return TYPE;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public EquipmentType getEquipmentType() {
+        return equipmentType;
     }
 }

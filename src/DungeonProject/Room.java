@@ -2,7 +2,7 @@ package DungeonProject;
 
 import ManualLinkedList.Node;
 
-public class Room extends Node {
+public class Room extends Node<Room> {
 
     private Player thePlayer;
 
