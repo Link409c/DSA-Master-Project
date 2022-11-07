@@ -1,4 +1,4 @@
-package DungeonProject;
+package DungeonProject.Model;
 
 /***********************************************************************************************************
  * Christian's Dungeon Crawler is an attempt at a text-driven, roguelike, dungeon crawling game with

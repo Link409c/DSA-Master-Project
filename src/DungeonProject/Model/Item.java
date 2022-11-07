@@ -1,4 +1,4 @@
-package DungeonProject;
+package DungeonProject.Model;
 
 /**
  * An object that the player can pick up and put in their inventory. The enumerated type variable

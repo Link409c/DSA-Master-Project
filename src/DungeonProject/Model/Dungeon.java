@@ -1,12 +1,12 @@
-package DungeonProject;
+package DungeonProject.Model;
 
 import ManualLinkedList.ChristianHolder;
 
-import java.util.Random;
+import static DungeonProject.Model.EquipmentType.*;
+import static DungeonProject.Model.ItemType.*;
+import static DungeonProject.Model.MonsterType.*;
 
-import static DungeonProject.MonsterType.*;
-import static DungeonProject.ItemType.*;
-import static DungeonProject.EquipmentType.*;
+import java.util.Random;
 
 
 /**

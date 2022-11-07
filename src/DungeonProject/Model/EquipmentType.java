@@ -1,4 +1,4 @@
-package DungeonProject;
+package DungeonProject.Model;
 
 /**
  * EquipmentType specifies the type of Equipment an Item is.

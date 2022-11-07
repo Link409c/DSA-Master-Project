@@ -1,4 +1,4 @@
-package DungeonProject;
+package DungeonProject.Model;
 
 public class Monster extends Being {
 

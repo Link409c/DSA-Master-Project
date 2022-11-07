@@ -1,23 +1,31 @@
-package DungeonProject;
+package DungeonProject.View;
 
 import java.util.Random;
 
+import DungeonProject.Model.Player;
+
 /**
- * A Script is an object that holds some amount of text to be printed in different
- * parts of the game. Includes the game introduction, messages that print between
+ * A ScriptPrinter is an object that holds some amount of text to be printed in different
+ * parts of the game. Includes the game introduction, menus, messages that print between
  * floors, the end game messages, and the victory message.
  */
-public class Script {
-    public void mainMenuScript(){
-        System.out.println("{}================================================================{}");
-        System.out.println("{}====   C H R I S T I A N ' S  D U N G E O N  C R A W L E R  ===={}");
-        System.out.println("{}================================================================{}");
-        System.out.println("{}====   (1)  N E W  G A M E         == == ==   o            ooo  {}");
-        System.out.println("{} ==    (2)  C O N T I N U E           ===o        ==        o   {}");
-        System.out.println("{}   ==  (3)  L O A D       ===             ==      o oo          {}");
-        System.out.println("{}================================================================{}");
-    }
+public class ScriptPrinter inherits Printable{
 
+    /**
+     * playerItemsScript prints the player's usable item list when selected in the inventory.
+     */
+    public void playerItemsScript() {}
+    
+    /**
+     * playerEquipmentScript prints the player's equipment item list when selected in the inventory.
+     */
+    public void playerEquipmentScript() {}
+    
+    /**
+     * playerKeyItemsScript prints the player's key item list when selected in the inventory.
+     */
+    public void playerKeyItemsScript() {}
+    
     /**
      * introScript method holds the introduction for the game and prints it
      * when the new game method is called.
@@ -65,6 +73,11 @@ public class Script {
         }
     }
 
+    /**
+     * loadGameScript prints a short script confirming the selection and welcoming the player
+     * back to the game.
+     * @param p
+     */
     public void loadGameScript(Player p){
         System.out.println("Resuming your saved game.");
         System.out.println("Welcome back, " + p.getName() + ".");
@@ -107,5 +120,9 @@ public class Script {
 
     public void victoryScript() {
         //code
+    }
+    
+    public void print(){
+    	
     }
 }

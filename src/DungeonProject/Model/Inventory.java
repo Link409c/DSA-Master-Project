@@ -1,4 +1,4 @@
-package DungeonProject;
+package DungeonProject.Model;
 
 import ManualLinkedList.ChristianHolder;
 
@@ -16,8 +16,8 @@ public class Inventory {
      * @param p the player object currently in the game.
      */
 
-    public void inventoryMenu(Player p) {
-        boolean end = false;
+    public boolean inventoryMenu(Player p) {
+        boolean act = false, end = false;
         while (!end) {
             System.out.println("|-------- INVENTORY --------|");
             //print the inventory menu.
@@ -36,8 +36,8 @@ public class Inventory {
             ChristianHolder<Item> subInventory;
             String itemName;
             //player action according to input
-            boolean itemsEnd = false;
-            while(!itemsEnd){
+            
+            while(!act){
                 switch (choice) {
                     case 1 -> {
                         System.out.println("|---------- ITEMS ----------|");
@@ -49,6 +49,7 @@ public class Inventory {
                                 System.out.println("Enter the item name to use: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "use");
+                                act = true;
                             }
                             case 2 -> {
                                 System.out.println("Enter the item name to check: ");
@@ -61,7 +62,7 @@ public class Inventory {
                                 p.useItem(subInventory, itemName, "drop");
                             }
                             case 4 -> {
-                                itemsEnd = true;
+                                end = true;
                             }
                         }
 
@@ -88,7 +89,7 @@ public class Inventory {
                                 p.useItem(subInventory, itemName, "drop");
                             }
                             case 4 -> {
-                                itemsEnd = true;
+                                end = true;
                             }
                         }
 
@@ -115,7 +116,7 @@ public class Inventory {
                                 p.useItem(subInventory, itemName, "drop");
                             }
                             case 4 -> {
-                                itemsEnd = true;
+                                end = true;
                             }
                         }
                     }
@@ -125,6 +126,7 @@ public class Inventory {
                 }
             }
         }
+        return act;
     }
 
 

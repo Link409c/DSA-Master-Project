@@ -1,4 +1,4 @@
-package DungeonProject;
+package DungeonProject.Model;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
