@@ -117,11 +117,11 @@ public class Battle {
                 act = true;
             }
             case 3 -> {
-                p.getInventory().inventoryMenu(p);
-
+                act = p.getInventory().inventoryMenu(p);
             }
             case 4 -> {
                 p.runAway();
+                act = true;
             }
 
         }
