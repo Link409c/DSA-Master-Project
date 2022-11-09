@@ -65,4 +65,6 @@ public class WindowPrinter{
 
 	}
 
+	public void printBattleResultWindow(){}
+
 }
