@@ -3,7 +3,7 @@ package DungeonProject.Model;
 public class Monster extends Being {
 
     /**
-     * Mutate changes the stats of the monster based on its monster type.
+     * Mutate changes the name and stats of the monster based on its monster type.
      */
     public void mutate(int currentFloor, int playerLevel){
         switch(getMonsterType()){
@@ -50,6 +50,15 @@ public class Monster extends Being {
                 setAttackPoints(5 * getLevel());
                 setDefensePoints(getLevel());
                 setSpeed(getLevel() - (playerLevel/2));
+                setExperience(currentFloor * 35);
+            }
+            case Lizardman -> {
+                setName("Lizardman");
+                setLevel(currentFloor + 1);
+                setMaxHealthPoints(35 * getLevel());
+                setAttackPoints(6 * getLevel());
+                setDefensePoints(4 * getLevel());
+                setSpeed(3 * getLevel());
                 setExperience(currentFloor * 35);
             }
             case Orc -> {

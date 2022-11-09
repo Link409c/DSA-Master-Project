@@ -6,31 +6,16 @@ import DungeonProject.Model.Player;
 
 /**
  * A ScriptPrinter is an object that holds some amount of text to be printed in different
- * parts of the game. Includes the game introduction, menus, messages that print between
+ * parts of the game. Includes the game introduction, messages that print between
  * floors, the end game messages, and the victory message.
  */
-public class ScriptPrinter inherits Printable{
+public class ScriptPrinter{
 
-    /**
-     * playerItemsScript prints the player's usable item list when selected in the inventory.
-     */
-    public void playerItemsScript() {}
-    
-    /**
-     * playerEquipmentScript prints the player's equipment item list when selected in the inventory.
-     */
-    public void playerEquipmentScript() {}
-    
-    /**
-     * playerKeyItemsScript prints the player's key item list when selected in the inventory.
-     */
-    public void playerKeyItemsScript() {}
-    
     /**
      * introScript method holds the introduction for the game and prints it
      * when the new game method is called.
      */
-    public void introScript(){
+    public void printIntroScript(){
         System.out.println("Welcome to Christian's Dungeon Crawler.");
         System.out.println("This is a dungeon exploration game, where the player");
         System.out.println("will challenge the monsters within, floor by floor, and");
@@ -44,7 +29,7 @@ public class ScriptPrinter inherits Printable{
      * a player continues the game after a game over occurs, or when they progress
      * to a new floor of the dungeon.
      */
-    public void continueScript(){
+    public void printContinueScript(){
         //generate a random number
         Random r = new Random();
         int getScript = r.nextInt(1, 6);
@@ -78,7 +63,7 @@ public class ScriptPrinter inherits Printable{
      * back to the game.
      * @param p
      */
-    public void loadGameScript(Player p){
+    public void printLoadGameScript(Player p){
         System.out.println("Resuming your saved game.");
         System.out.println("Welcome back, " + p.getName() + ".");
     }
@@ -89,7 +74,7 @@ public class ScriptPrinter inherits Printable{
      * game when called.
      */
 
-    public void endGameScript(int currentFloor) {
+    public void printEndGameScript(int currentFloor) {
         if(currentFloor < 10){
             System.out.println("The depth you've achieved is but the surface of this " +
                     "deep and twisting labyrinth.");
@@ -118,7 +103,7 @@ public class ScriptPrinter inherits Printable{
      * final floor of the dungeon.
      */
 
-    public void victoryScript() {
+    public void printVictoryScript() {
         //code
     }
     

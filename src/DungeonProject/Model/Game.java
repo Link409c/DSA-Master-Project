@@ -1,5 +1,8 @@
 package DungeonProject.Model;
 
+import DungeonProject.Control.DungeonMenu;
+import DungeonProject.View.MenuPrinter;
+import DungeonProject.View.ScriptPrinter;
 import ManualLinkedList.ChristianHolder;
 import java.io.File;
 import java.util.Scanner;
@@ -12,31 +15,8 @@ public class Game implements GameInterface{
     public void play(){
         System.out.println("Entering the Dungeon...");
         //call dungeon menu method to begin the game
-        getDungeon().dungeonMenu(getThePlayer());
-    }
-
-    /**
-     * mainMenu method controls the game outside of dungeon gameplay. the user can start a new game,
-     * continue a game, or load from a save file.
-     */
-    @Override
-    public void mainMenu() {
-        //print main menu script
-        Script s = new Script();
-        s.mainMenuScript();
-        //prompt user for input
-        Scanner in = new Scanner(System.in);
-        System.out.println("Choose an option.");
-        //new game, continue, or load
-        int choice = in.nextInt();
-        switch(choice){
-            case 1 -> newGame();
-            case 2 -> continueGame();
-            case 3 -> {
-                //File aFile = new File(path);
-                //continueFromSave();
-            }
-        }
+        DungeonMenu d = new DungeonMenu();
+        d.accessMenu();
     }
 
     /**
@@ -76,8 +56,8 @@ public class Game implements GameInterface{
      */
     public void newGame(){
         //print the intro script
-        Script newScript = new Script();
-        newScript.introScript();
+        ScriptPrinter newScript = new ScriptPrinter();
+        newScript.printIntroScript();
         System.out.println("Starting a new game.");
         //prompt the player for name input
         Scanner in = new Scanner(System.in);
@@ -105,8 +85,8 @@ public class Game implements GameInterface{
         }
         else {
             //print continue script
-            Script continueScript = new Script();
-            continueScript.continueScript();
+            ScriptPrinter continueScript = new ScriptPrinter();
+            continueScript.printContinueScript();
             //using the existing player object, continue in a new dungeon
             createDungeon();
         }
@@ -155,8 +135,8 @@ public class Game implements GameInterface{
         //if no, quit the game
         }else if(quit.equalsIgnoreCase("N") || quit.equalsIgnoreCase("No")){
             //print end game script
-            Script end = new Script();
-            end.endGameScript(getDungeon().getCurrentFloor());
+            ScriptPrinter end = new ScriptPrinter();
+            end.printEndGameScript(getDungeon().getCurrentFloor());
             System.exit(0);
         }
     }

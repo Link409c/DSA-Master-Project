@@ -245,22 +245,6 @@ public class Dungeon {
         //print victory script and end game
     }
 
-    /**
-     * The dungeonMenu method will control the player actions when outside
-     * of battle. Uses the player input passed to a switch statement
-     * to either move left, right, check status, check inventory, or input cheats
-     * (secret 5th option). The program uses this method to access the objects and
-     * variables of the current Room object.
-     */
-    public void dungeonMenu(Player p){
-        //move left or right
-        //check map
-        //open inventory
-        //check status
-        //input cheats
-        //or quit
-    }
-
     //getters, setters, and global variables
 
     private ChristianHolder<Room> dungeonRooms;

@@ -1,5 +1,9 @@
 package DungeonProject.Model;
 
+import DungeonProject.Control.BattleMenu;
+import DungeonProject.View.MenuPrinter;
+import DungeonProject.View.WindowPrinter;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -9,27 +13,31 @@ import java.util.Scanner;
 public class Battle {
 
     /**
-     * battle method is called whenever the player enters a room that contains an enemy.
-     * The method will pass in the player and monster objects from the room, and call the
-     * battleMenu method to accept player input. The user will battle with the monster
-     * until one of their HP hits zero. Then, if the player wins, they will gain experience
-     * and (if possible) an item dropped by the enemy.
+     * runBattle method is responsible for operations of the battle object. The method will
+     * pass in the player and monster objects from the room, and call the battleMenu method to
+     * accept player input. The user will battle with the monster until one of their HP hits zero.
+     * Then, if the player wins, they will gain experience and (if possible) an item dropped by the enemy.
      * @param p The player object.
      * @param m The monster the player will battle.
+     * @return returns true if the player wins; false if not.
      */
-    public void battle(Player p, Monster m){
+    public boolean runBattle(Player p, Monster m){
         System.out.println("Battle! You encounter a " + m.getName()  + ".");
+        WindowPrinter w = new WindowPrinter();
         //variables to hold defense stat
         int playerActualDefense = p.getDefensePoints();
         int monsterActualDefense = m.getDefensePoints();
         //while the player and monster are alive, battle
         //action flag to progress state of battle
-        boolean action = false;
+        boolean action = false, playerWon = true;
+        BattleMenu battleMenu = new BattleMenu();
         while(!p.isDead() && !m.isDead()){
+            //print the battle window
+            w.printBattleWindow(p, m);
             //if player is faster they go first
             if(p.getSpeed() > m.getSpeed()) {
                 while(!action) {
-                    action = battleMenu(p, m);
+                    action = battleMenu.accessMenu(p, m);
                 }
                 m.attack(p);
 
@@ -46,26 +54,25 @@ public class Battle {
                 //otherwise the monster attacks first
             }else{
                 m.attack(p);
-                if(!p.isDead()){
-                    while(!action) {
-                        action = battleMenu(p, m);
-                    }
+                while(!action) {
+                    action = battleMenu.accessMenu(p, m);
                 }
-                //check defense after the turn ends
-            }
-            //reset defense if either being defended
-            if(p.getDefensePoints() != playerActualDefense){
-                p.setDefensePoints(playerActualDefense);
             }
 
-            /* if(m.getDefensePoints() != monsterActualDefense){
-             *   m.setDefensePoints(monsterActualDefense);
-            }*/
         }
+            //reset defense if either being defended
+        if(p.getDefensePoints() != playerActualDefense){
+                p.setDefensePoints(playerActualDefense);
+        }
+
+        /* if(m.getDefensePoints() != monsterActualDefense){
+                m.setDefensePoints(monsterActualDefense);
+           }*/
+
         //check if either being is dead
         if(p.isDead()){
             //end the game if player is dead
-            endGame();
+            return !playerWon;
             //if monster is dead end the battle
         }else if(m.isDead()){
             //print the results of the battle
@@ -81,63 +88,7 @@ public class Battle {
                 p.setItemsAcquired(p.getItemsAcquired() + 1);
             }
         }
+        return playerWon;
     }
-
-    /**
-     * battleMenu method will control the player actions when in battle. Uses player
-     * input passed to a switch statement to either attack, defend, use items, or run away.
-     * @param p the player object currently in the game.
-     * @param m the monster object the player is battling.
-     * @Return returns true if the player takes an action (attack, defend, use an item, run).
-     * returns false if they return to a previous menu, example: choose an option, and then
-     * choose the "return" option afterward.
-     */
-    public boolean battleMenu(Player p, Monster m){
-        //prompt the player for input
-        Scanner in = new Scanner(System.in);
-        System.out.println("What will you do?");
-        System.out.println("1. Attack\n2. Defend\n3. Item\n4. Run");
-        //variable for input
-        int choice;
-        try{
-            choice = (in.nextInt());
-        }catch(InputMismatchException notANumber){
-            System.out.println("Input a number, 1 through 4.");
-            choice = (in.nextInt());
-        }
-        boolean act = false;
-        //player action according to input
-        switch(choice){
-            case 1 -> {
-                p.attack(m);
-                act = true;
-            }
-            case 2 -> {
-                p.defend();
-                act = true;
-            }
-            case 3 -> {
-                act = p.getInventory().inventoryMenu(p);
-            }
-            case 4 -> {
-                p.runAway();
-                act = true;
-            }
-
-        }
-        return act;
-    }
-
-    //global variables
-    private Player thePlayer;
-
-    private Monster theMonster;
-
-    public Battle(Player thePlayer, Monster theMonster){
-        this.thePlayer = thePlayer;
-        this.theMonster = theMonster;
-    }
-
-
 }
 
