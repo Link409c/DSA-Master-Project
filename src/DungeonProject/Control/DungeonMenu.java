@@ -7,9 +7,8 @@ import DungeonProject.Model.Player;
  * player input passed to a switch statement to either move left, right, check status,
  * check inventory, or quit.
  */
-public class DungeonMenu implements MenuInterface{
+public class DungeonMenu{
 
-    @Override
     public void accessMenu(Player p){
         //move left or right
         //check map

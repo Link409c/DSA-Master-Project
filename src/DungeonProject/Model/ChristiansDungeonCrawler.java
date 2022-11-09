@@ -15,7 +15,7 @@ public class ChristiansDungeonCrawler {
 
         Game theGame = new Game();
 
-        theGame.mainMenu();
+        theGame.play();
 
     }
 }

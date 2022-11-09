@@ -38,22 +38,19 @@ public class InventoryMenu {
             while(!act){
                 switch (choice) {
                     case 1 -> {
-                        subInventory = currInventory.checkInventory(ItemType.USABLE);
+                        subInventory = currInventory.subdivideInventory(ItemType.USABLE);
                         choice = in.nextInt();
                         switch (choice) {
                             case 1 -> {
-                                System.out.println("Enter the item name to use: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "use");
                                 act = true;
                             }
                             case 2 -> {
-                                System.out.println("Enter the item name to check: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "description");
                             }
                             case 3 -> {
-                                System.out.println("Enter the item name to drop: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "drop");
                             }
@@ -64,21 +61,18 @@ public class InventoryMenu {
 
                     }
                     case 2 -> {
-                        subInventory = currInventory.checkInventory(ItemType.EQUIPMENT);
+                        subInventory = currInventory.subdivideInventory(ItemType.EQUIPMENT);
                         choice = in.nextInt();
                         switch (choice) {
                             case 1 -> {
-                                System.out.println("Enter the item name to equip: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "equip");
                             }
                             case 2 -> {
-                                System.out.println("Enter the item name to check: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "description");
                             }
                             case 3 -> {
-                                System.out.println("Enter the item name to drop: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "drop");
                             }
@@ -89,21 +83,18 @@ public class InventoryMenu {
 
                     }
                     case 3 -> {
-                        subInventory = currInventory.checkInventory(ItemType.KEY);
+                        subInventory = currInventory.subdivideInventory(ItemType.KEY);
                         choice = in.nextInt();
                         switch (choice) {
                             case 1 -> {
-                                System.out.println("Enter the item name to use: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "use");
                             }
                             case 2 -> {
-                                System.out.println("Enter the item name to check: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "description");
                             }
                             case 3 -> {
-                                System.out.println("Enter the item name to drop: ");
                                 itemName = in.nextLine();
                                 p.useItem(subInventory, itemName, "drop");
                             }

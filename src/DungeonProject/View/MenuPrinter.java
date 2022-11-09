@@ -64,8 +64,8 @@ public class MenuPrinter{
         System.out.println("\n{}================================================================{}");
         System.out.println("{}====                   E Q U I P M E N T                    ===={}");
         System.out.println("{}================================================================{}");
-        System.out.println("{}====   (1)  E Q U I P      == o=          D R O P   (3)     ooo {}");
-        System.out.println("{} ==oo  	(2)  C H E C K    ===o  R E T U R N   (4)     o   {}");
+        System.out.println("{}====   (1)  E Q U I P      == o=           D R O P    (3)   ooo {}");
+        System.out.println("{} ==oo  	(2)  C H E C K    ===o      R E T U R N   (4)     o   {}");
         System.out.println("{}   == o   0   ===      @       ==      o oo   * * =             {}");
         System.out.println("{}================================================================{}\n");
     }
@@ -73,6 +73,14 @@ public class MenuPrinter{
     /**
      * usableMenu shows the player available options when accessing usable items.
      */
-    public void printUsableMenu(){}
+    public void printUsableMenu(){
+    	System.out.println("\n{}================================================================{}");
+        System.out.println("{}====                      I T E M S                         ===={}");
+        System.out.println("{}================================================================{}");
+        System.out.println("{}====   (1)    U S E        == o=           D R O P    (3)   ooo {}");
+        System.out.println("{} ==oo  	(2)  C H E C K    ===o     R E T U R N   (4)      o   {}");
+        System.out.println("{}   == o   0   ===      @       ==      o oo   * * =             {}");
+        System.out.println("{}================================================================{}\n");
+    }
 
 }

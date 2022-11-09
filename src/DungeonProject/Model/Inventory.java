@@ -11,13 +11,13 @@ import java.util.Scanner;
 public class Inventory {
 
     /**
-     * checkInventory method gets the player inventory, and based on the player input, prints
-     * items of the given type out for the player.
+     * subdivideInventory method gets the player inventory, and based on the player input,
+     * creates a new list of only those items to be used by other methods.
      * @param itemType the type of item to print the inventory of.
      * @return Returns the inventory of the selected items.
      */
 
-    public ChristianHolder<Item> checkInventory(ItemType itemType) {
+    public ChristianHolder<Item> subdivideInventory(ItemType itemType) {
         //make a new item list
         ChristianHolder<Item> newInventory = new ChristianHolder<>();
         int inventorySize = getItems().getSize();
@@ -28,8 +28,6 @@ public class Inventory {
                 newInventory.add(temp);
             }
         }
-        //print the items of the selected type
-        newInventory.printHolder();
         //return the section of the inventory to be used by other methods
         return newInventory;
     }

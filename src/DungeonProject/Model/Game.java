@@ -1,7 +1,7 @@
 package DungeonProject.Model;
 
 import DungeonProject.Control.DungeonMenu;
-import DungeonProject.View.MenuPrinter;
+import DungeonProject.Control.MainMenu;
 import DungeonProject.View.ScriptPrinter;
 import ManualLinkedList.ChristianHolder;
 import java.io.File;
@@ -13,39 +13,24 @@ public class Game implements GameInterface{
      * Run is a container method for starting the game.
      */
     public void play(){
+    	MainMenu mainMenu = new MainMenu();
+    	int option = mainMenu.accessMenu();
+    	if(option == 1) {
+    		newGame();
+    	}
+    	if(option == 2) {
+    		continueGame();
+    	}
+    	if(option == 3) {
+    		//continueFromSave();
+    	}
         System.out.println("Entering the Dungeon...");
         //call dungeon menu method to begin the game
         DungeonMenu d = new DungeonMenu();
-        d.accessMenu();
-    }
-
-    /**
-     * createDungeon method will construct the dungeon object, construct the Monsters List,
-     * and construct the Item List. It will populate the starting room with the player
-     * object, randomly populate the rooms of the dungeon with items and monsters, and
-     * assign one room as the exit.
-     */
-    public void createDungeon(){
-        //create the dungeon
-        Dungeon newDungeon = new Dungeon();
-        //create dungeon rooms
-        System.out.println("Constructing the Dungeon...");
-        ChristianHolder<Room> rooms = newDungeon.generateRooms();
-        newDungeon.setDungeonRooms(rooms);
-        //randomly generate monsters to add to the dungeon
-        System.out.println("Spawning a horde of terrible monsters...");
-        newDungeon.generateMonsters(getThePlayer());
-        //randomly generate items to add to the dungeon
-        System.out.println("...which guard untold treasure!");
-        System.out.println("Creating items...");
-        newDungeon.generateItems();
-        //populate the dungeon with the created objects and player
-        /* populate dungeon method has a pair of nested for loops to account for
-         * errors in random number generation, so I thought it would be funny to put
-         * a loading message here as it might take longer than expected for the
-         * method to finish working. haha */
-        System.out.println(".   .   .     . . .  ...Loading...  . . .     .   .   .");
-        newDungeon.populateDungeon(getThePlayer(), getDungeon().getTreasures(), getDungeon().getMonsters());
+        while(!getThePlayer().isDead()) {
+        	d.accessMenu(getThePlayer());
+        }
+        endGame();
     }
 
     /**
@@ -66,8 +51,9 @@ public class Game implements GameInterface{
         //create a new player object using the name
         //set it as the player
         setThePlayer(new Player(yourName));
+        DungeonBuilder db = new DungeonBuilder();
         //call createDungeon method
-        createDungeon();
+        setDungeon(db.createDungeon(getThePlayer()));
     }
 
     /**
@@ -81,14 +67,17 @@ public class Game implements GameInterface{
         if(getThePlayer() == null){
             System.out.println("There is no current game in progress.\nStart a new game, or " +
                     "load a save file.");
-            mainMenu();
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.accessMenu();
         }
         else {
             //print continue script
             ScriptPrinter continueScript = new ScriptPrinter();
             continueScript.printContinueScript();
             //using the existing player object, continue in a new dungeon
-            createDungeon();
+            DungeonBuilder db = new DungeonBuilder();
+            //call createDungeon method
+            setDungeon(db.createDungeon(getThePlayer()));
         }
     }
 
@@ -110,16 +99,16 @@ public class Game implements GameInterface{
      * are printed. If they quit, the results are not printed. It prompts the user to continue, with
      * the current player object being used to create a new randomized dungeon.
      */
-    public void endGame() {
+    public void endGame(Player p) {
         //change output based on how the method was called
         //player death prints results
-        if(getThePlayer().isDead()){
-            getThePlayer().setGamesPlayed(getThePlayer().getGamesPlayed() + 1);
+        if(p.isDead()){
+            p.setGamesPlayed(p.getGamesPlayed() + 1);
             System.out.println("You died.");
-            System.out.println("You've braved the dungeon " + getThePlayer().getGamesPlayed() + " times.");
-            System.out.println("Enemies Killed: " + getThePlayer().getKillCount());
-            System.out.println("Items collected: " + getThePlayer().getItemsAcquired());
-            System.out.println("Floors Cleared: " + getThePlayer().getFloorsCleared());
+            System.out.println("You've braved the dungeon " + p.getGamesPlayed() + " times.");
+            System.out.println("Enemies Killed: " + p.getKillCount());
+            System.out.println("Items collected: " + p.getItemsAcquired());
+            System.out.println("Floors Cleared: " + p.getFloorsCleared());
         //quitting via the menu does not print results
         }else{
             System.out.println("You Quit.");

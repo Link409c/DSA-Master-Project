@@ -7,7 +7,7 @@ import DungeonProject.View.MenuPrinter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-public class BattleMenu implements MenuInterface{
+public class BattleMenu{
 
     /**
      * accessMenu method will control the player actions when in battle. Uses player
@@ -18,7 +18,7 @@ public class BattleMenu implements MenuInterface{
      * returns false if they return to a previous menu, example: choose an option, and then
      * choose the "return" option afterward.
      */
-    @Override
+    
     public boolean accessMenu(Player p, Monster m){
         //print the battle menu
         MenuPrinter b = new MenuPrinter();
@@ -54,5 +54,9 @@ public class BattleMenu implements MenuInterface{
             }
         }
         return act;
+    }
+    
+    public BattleMenu() {
+    	
     }
 }

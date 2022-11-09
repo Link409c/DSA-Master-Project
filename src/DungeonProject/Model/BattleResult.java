@@ -5,7 +5,7 @@ package DungeonProject.Model;
  */
 public class BattleResult {
 
-    public Player doleRewards(Player p, Monster m){
+    public Player battleRewards(Player p, Monster m){
         //print the results of the battle
         //increase kill counts, experience, items etc. and check level up
         System.out.println("Victory! You defeated " + m.getName() + ".");

@@ -69,12 +69,12 @@ public class ScriptPrinter{
     }
 
     /**
-     * endGameScript method holds a script enticing the player to keep playing. it
-     * prints the script based on the floor the player has reached at the end of a
-     * game when called.
+     * sectionScript method holds a script enticing the player to keep playing. it
+     * prints the script based on the floor the player has reached when they move past
+     * that section of the dungeon.
      */
 
-    public void printEndGameScript(int currentFloor) {
+    public void printSectionScript(int currentFloor) {
         if(currentFloor < 10){
             System.out.println("The depth you've achieved is but the surface of this " +
                     "deep and twisting labyrinth.");
@@ -94,7 +94,7 @@ public class ScriptPrinter{
                     + "catacombs. Soon, it will be within your reach...");
         }
         else if(currentFloor >= 91 && currentFloor <= 98){
-            System.out.println("You're nearly there! The nadir of this labyrinth is just below.");
+            System.out.println("You're nearly there! The nadir of this labyrinth is just below you.");
         }
     }
 
