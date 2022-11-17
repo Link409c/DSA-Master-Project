@@ -11,6 +11,7 @@ public class Monster extends Being {
                 setName("Slime");
                 setLevel(currentFloor);
                 setMaxHealthPoints(10 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(2 * getLevel());
                 setDefensePoints(getLevel());
                 setSpeed(getLevel());
@@ -20,6 +21,7 @@ public class Monster extends Being {
                 setName("Bat");
                 setLevel(currentFloor);
                 setMaxHealthPoints(12 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(getLevel());
                 setDefensePoints(getLevel());
                 setSpeed(2 * getLevel());
@@ -29,6 +31,7 @@ public class Monster extends Being {
                 setName("Goblin");
                 setLevel(2* currentFloor);
                 setMaxHealthPoints(20 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(4 * getLevel());
                 setDefensePoints(2 * getLevel());
                 setSpeed(getLevel());
@@ -38,6 +41,7 @@ public class Monster extends Being {
                 setName("Skeleton");
                 setLevel(currentFloor);
                 setMaxHealthPoints(15 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(5 * getLevel());
                 setDefensePoints(3 * getLevel());
                 setSpeed(2 * getLevel());
@@ -47,6 +51,7 @@ public class Monster extends Being {
                 setName("Zombie");
                 setLevel(currentFloor);
                 setMaxHealthPoints(15 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(5 * getLevel());
                 setDefensePoints(getLevel());
                 setSpeed(getLevel() - (playerLevel/2));
@@ -56,6 +61,7 @@ public class Monster extends Being {
                 setName("Lizardman");
                 setLevel(currentFloor + 1);
                 setMaxHealthPoints(35 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(6 * getLevel());
                 setDefensePoints(4 * getLevel());
                 setSpeed(3 * getLevel());
@@ -65,6 +71,7 @@ public class Monster extends Being {
                 setName("Orc");
                 setLevel(currentFloor + 2);
                 setMaxHealthPoints(50 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(8 * getLevel());
                 setDefensePoints(5 * getLevel());
                 setSpeed(getLevel());
@@ -74,6 +81,7 @@ public class Monster extends Being {
                 setName("Minotaur");
                 setLevel(currentFloor + 2);
                 setMaxHealthPoints(150 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(13 * getLevel());
                 setDefensePoints(10 * getLevel());
                 setSpeed(3 * getLevel());
@@ -83,6 +91,7 @@ public class Monster extends Being {
                 setName("Dragon");
                 setLevel(currentFloor + 5);
                 setMaxHealthPoints(200 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(20 * getLevel());
                 setDefensePoints(15 * getLevel());
                 setSpeed(5 * getLevel());
@@ -92,11 +101,29 @@ public class Monster extends Being {
                 setName("Treasure Lizard");
                 setLevel(currentFloor);
                 setMaxHealthPoints(20 * getLevel());
+                setCurrHealthPoints(getMaxHealthPoints());
                 setAttackPoints(1);
                 setDefensePoints(5 * getLevel());
                 setSpeed(10 * getLevel());
                 setExperience(currentFloor * 100);
             }
+        }
+    }
+
+    /**
+     * Reflect instantiates a monster's variables as a copy of the player.
+     * @param p the player object to copy.
+     */
+    public void reflect(Player p){
+        if(monsterType == MonsterType.Reflection){
+            setName(p.getName());
+            setLevel(p.getLevel());
+            setMaxHealthPoints(p.getMaxHealthPoints());
+            setCurrHealthPoints(getMaxHealthPoints());
+            setAttackPoints(p.getAttackPoints());
+            setDefensePoints(p.getDefensePoints());
+            setSpeed(p.getSpeed());
+            setExperience(p.getLevelUpThreshold());
         }
     }
 
@@ -106,9 +133,16 @@ public class Monster extends Being {
 
     private Item reward;
 
+    public Monster(){}
+
     public Monster(MonsterType monsterType, int currentFloor, int playerLevel){
         this.monsterType = monsterType;
         mutate(currentFloor, playerLevel);
+    }
+
+    public Monster(MonsterType monsterType, Player p){
+        this.monsterType = monsterType;
+        reflect(p);
     }
 
     public MonsterType getMonsterType() {

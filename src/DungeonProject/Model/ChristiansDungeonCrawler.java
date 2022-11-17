@@ -13,9 +13,9 @@ package DungeonProject.Model;
 public class ChristiansDungeonCrawler {
     public static void main(String[] args){
 
-        Game theGame = new Game();
+        //Game theGame = new Game();
 
-        theGame.play();
+        //theGame.play();
 
     }
 }

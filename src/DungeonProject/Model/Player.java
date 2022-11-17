@@ -2,6 +2,7 @@ package DungeonProject.Model;
 
 import ManualLinkedList.ChristianHolder;
 import ManualLinkedList.Node;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -43,7 +44,7 @@ public class Player extends Being implements PlayerInterface {
         setAttackPoints(getLevel() * 10);
         setDefensePoints(getLevel() * 2);
         setSpeed(getLevel() * 5);
-        setLevelUpThreshold(getLevel() * 100);
+        setLevelUpThreshold(getLevelUpThreshold() + getLevel() * 100);
     }
 
     /**
@@ -56,80 +57,85 @@ public class Player extends Being implements PlayerInterface {
      */
     @Override
     public void useItem(ChristianHolder<Item> items, String aName, String mode){
-        Node<Item> temp = items.getHead();
-        Item theItem;
-        for(int i = 0; i < items.getSize(); i++){
-            if(!Objects.equals(temp.getE().getName(), aName)){
-                temp = temp.getNext();
+        if(items.getHead() != null) {
+            Node<Item> temp = items.getHead();
+            Item theItem;
+            int thisSize = items.getSize();
+            for (int i = 0; i < thisSize; i++) {
+                if (!Objects.equals(temp.getE().getName(), aName) && temp.getNext() != null) {
+                    temp = temp.getNext();
+                }
             }
-        }
-        theItem = temp.getE();
+            theItem = temp.getE();
 
-        if(mode.equalsIgnoreCase("use")) {
-            System.out.println("You recover " + theItem.getRestore() + " HP.");
-            setCurrHealthPoints(getCurrHealthPoints() + theItem.getRestore());
-            getInventory().getItems().removeValue(theItem);
-        }
-        else if(mode.equalsIgnoreCase("description")){
-            System.out.println(theItem.getDescription());
-        }
-        else if(mode.equalsIgnoreCase("drop")){
-            Scanner in = new Scanner(System.in);
-            System.out.println("Are you sure? Y/N: ");
-            String choice = in.nextLine();
-            if(choice.equalsIgnoreCase("Y") || choice.equalsIgnoreCase("yes")){
-                System.out.println("You drop a " + theItem.getName() + ".");
-                getInventory().getItems().removeValue(theItem);
-            }
-        }
-        else if(mode.equalsIgnoreCase("equip")){
-            //determine which slot the item goes in
-            if(theItem instanceof Equipment) {
+            if (mode.equalsIgnoreCase("use")) {
+                if (getCurrHealthPoints() != getMaxHealthPoints()) {
+                    System.out.println("You recover " + getMaxHealthPoints()*theItem.getRestore() + " HP.");
+                    setCurrHealthPoints(Math.min(getMaxHealthPoints(),
+                            ((int) (getCurrHealthPoints() + getMaxHealthPoints()*theItem.getRestore()))));
+                    getInventory().getItems().removeValue(theItem);
+                } else {
+                    System.out.println("Your HP is at Max.");
+                }
+            } else if (mode.equalsIgnoreCase("description")) {
+                System.out.println(theItem.getDescription());
+            } else if (mode.equalsIgnoreCase("drop")) {
+                Scanner in = new Scanner(System.in);
+                System.out.println("Are you sure? Y/N: ");
+                String choice = in.nextLine();
+                if (choice.equalsIgnoreCase("Y") || choice.equalsIgnoreCase("yes")) {
+                    System.out.println("You drop a " + theItem.getName() + ".");
+                    getInventory().getItems().removeValue(theItem);
+                }
+            } else if (mode.equalsIgnoreCase("equip")) {
+                //determine which slot the item goes in
+                if (theItem instanceof Equipment) {
+                    Equipment[] e = getEquipment();
+                    int theIndex = 3;
+                    if (((Equipment) theItem).getEquipmentClass() == EquipmentClass.WEAPON) {
+                        theIndex = 0;
+                    } else if (((Equipment) theItem).getEquipmentClass() == EquipmentClass.ARMOR) {
+                        theIndex = 1;
+                    } else if (((Equipment) theItem).getEquipmentClass() == EquipmentClass.ACCESSORY) {
+                        theIndex = 2;
+                    }
+                    //if player has equipment in this slot, put it back in the inventory
+                    if (e[theIndex] != null) {
+                        getInventory().getItems().add(e[theIndex]);
+                        System.out.println("Unequipped " + e[theIndex].getName() + ".");
+                    }
+                    //equip the item
+                    e[theIndex] = (Equipment) theItem;
+                    setEquipment(e);
+                    System.out.println("Equipped " + theItem.getName() + ".");
+                } else {
+                    System.out.println("You cannot equip this item.");
+                }
+            } else if (mode.equalsIgnoreCase("unequip")) {
+                //get equipment array
                 Equipment[] e = getEquipment();
-                int theIndex = 3;
-                if(((Equipment) theItem).getEquipmentType() == EquipmentType.WEAPON){
-                    theIndex = 0;
-                } else if(((Equipment) theItem).getEquipmentType() == EquipmentType.ARMOR){
-                    theIndex = 1;
-                } else if(((Equipment) theItem).getEquipmentType() == EquipmentType.ACCESSORY){
-                    theIndex = 2;
+                //display equipped items to player
+                System.out.println("|----- Currently Equipped -----|");
+                for (Equipment value : e) {
+                    System.out.println(value.getEquipmentClass().toString() + ": " + value.getName());
                 }
-                //if player has equipment in this slot, put it back in the inventory
-                if(e[theIndex] != null){
-                    getInventory().getItems().add(e[theIndex]);
-                    System.out.println("Unequipped " + e[theIndex].getName() + ".");
+                //get input for which item to remove
+                System.out.println("Unequip which item?\n1. Weapon\n2. Armor\n3. Accessory");
+                Scanner in = new Scanner(System.in);
+                int choice = in.nextInt();
+                //if the slot has an item, put it back in the inventory
+                if (e[choice - 1] != null) {
+                    getInventory().getItems().add(e[choice]);
+                    System.out.println("Unequipped " + e[choice].getName() + ".");
                 }
-                //equip the item
-                e[theIndex] = (Equipment) theItem;
-                setEquipment(e);
-                System.out.println("Equipped " + theItem.getName() + ".");
+                //else tell the player there is no item equipped
+                else {
+                    System.out.println("You do not have any equipment in the " +
+                            e[choice].getEquipmentClass().toString() + " slot.");
+                }
             }
-            else{
-                System.out.println("You cannot equip this item.");
-            }
-        }
-        else if(mode.equalsIgnoreCase("unequip")){
-            //get equipment array
-            Equipment[] e = getEquipment();
-            //display equipped items to player
-            System.out.println("|----- Currently Equipped -----|");
-            for (Equipment value : e) {
-                System.out.println(value.getEquipmentType().toString() + ": " + value.getName());
-            }
-            //get input for which item to remove
-            System.out.println("Unequip which item?\n1. Weapon\n2. Armor\n3. Accessory");
-            Scanner in = new Scanner(System.in);
-            int choice = in.nextInt();
-            //if the slot has an item, put it back in the inventory
-            if(e[choice - 1] != null){
-                getInventory().getItems().add(e[choice]);
-                System.out.println("Unequipped " + e[choice].getName() + ".");
-            }
-            //else tell the player there is no item equipped
-            else{
-                System.out.println("You do not have any equipment in the " +
-                        e[choice].getEquipmentType().toString() + " slot.");
-            }
+        }else{
+            System.out.println("Your inventory is empty.");
         }
     }
 
@@ -141,6 +147,7 @@ public class Player extends Being implements PlayerInterface {
     }
 
     //getter methods for player stats check equipment for any stat boosts.
+    //player stats are capped at 9999.
 
     @Override
     public int getMaxHealthPoints(){
@@ -151,7 +158,7 @@ public class Player extends Being implements PlayerInterface {
                 newMaxHP += equipped[i].getMaxHealthPoints();
             }
         }
-        return newMaxHP;
+        return Math.min(newMaxHP, getSTAT_CAP());
     }
 
     @Override
@@ -163,7 +170,7 @@ public class Player extends Being implements PlayerInterface {
                 newMaxAtk += equipped[i].getAttack();
             }
         }
-        return newMaxAtk;
+        return Math.min(newMaxAtk, getSTAT_CAP());
     }
     @Override
     public int getDefensePoints(){
@@ -174,7 +181,7 @@ public class Player extends Being implements PlayerInterface {
                 newMaxDef += equipped[i].getDefense();
             }
         }
-        return newMaxDef;
+        return Math.min(newMaxDef, getSTAT_CAP());
     }
     @Override
     public int getSpeed(){
@@ -185,12 +192,14 @@ public class Player extends Being implements PlayerInterface {
                 newMaxSpd += equipped[i].getSpeed();
             }
         }
-        return newMaxSpd;
+        return Math.min(newMaxSpd, getSTAT_CAP());
     }
 
     private Inventory inventory;
 
     private Equipment[] equipment;
+
+    private final int STAT_CAP = 9999;
 
     private int experience;
 
@@ -207,6 +216,11 @@ public class Player extends Being implements PlayerInterface {
     //constructor creates a level 1 default hero
     public Player(String name) {
 
+        Equipment[] heroEquipment = new Equipment[3];
+        Equipment woodenSword = new Equipment("Wooden Sword", 1);
+        heroEquipment[0] = woodenSword;
+        setEquipment(heroEquipment);
+
         setName(name);
         setLevel(1);
         setMaxHealthPoints(getLevel() * 100);
@@ -217,15 +231,17 @@ public class Player extends Being implements PlayerInterface {
         setExperience(0);
         setLevelUpThreshold(getLevel() * 100);
 
+        Inventory playerInventory = new Inventory();
+        ChristianHolder<Item> items = new ChristianHolder<>();
+        Item potion = new Item(ItemType.USABLE, "Potion", 1);
+        items.add(potion);
+        playerInventory.setItems(items);
+        setInventory(playerInventory);
+
         setKillCount(0);
         setFloorsCleared(0);
         setItemsAcquired(0);
-
-        Equipment[] heroEquipment = new Equipment[3];
-        Equipment woodenSword = new Equipment(EquipmentType.WEAPON, "Wooden Sword", "The most basic " +
-                "of weapons.", 5, 0, 0, 0, 0);
-        heroEquipment[0] = woodenSword;
-        setEquipment(heroEquipment);
+        setGamesPlayed(1);
     }
 
     public Player(String name, int healthPoints, int attackPoints, int defensePoints,
@@ -240,6 +256,9 @@ public class Player extends Being implements PlayerInterface {
         this.inventory = inventory;
     }
 
+    public int getSTAT_CAP(){
+        return STAT_CAP;
+    }
     public void setExperience(int experience) {
         this.experience = experience;
     }

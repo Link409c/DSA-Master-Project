@@ -3,7 +3,7 @@ package ManualLinkedList;
 /***************************************************************************************************************
  * ChristianHolder.java
  * @author Chris Simpson
- * @version 11/3/2022
+ * @version 11/10/2022
  * This program is an exercise made to build our skill set in understanding Data Structures, specifically the
  * List class and its different forms. In particular, this class is made to emulate the Linked List structure.
  ***************************************************************************************************************/
@@ -51,7 +51,7 @@ public class ChristianHolder<E>
             //increment size
             size++;
             //while temp.getNext() is not the head,
-            while((temp.getNext()) != getHead()) {
+            while((temp.getNext()) != getHead() && temp.getNext() != null) {
                 //set temp to next
                 temp = temp.getNext();
                 //increment size
@@ -83,7 +83,7 @@ public class ChristianHolder<E>
     //method to move through the list until you find a specific position
     //accepts a position variable of type int
     //returns the node object at the desired position
-    public Node<E> findPosition(int aPosition){
+    public Node<E> findNodeAtPosition(int aPosition){
         //create node to return, starting at head
         Node<E> atPos = getHead();
         //call getSize to determine list size
@@ -102,6 +102,25 @@ public class ChristianHolder<E>
             }
         }
         return atPos;
+    }
+
+    /**
+     * findAPosition is used to find the index of a specific node if it exists
+     * in the list.
+     * @param node the node to find the position of.
+     * @return returns the index number.
+     */
+    public int findAPosition(Node<E> node){
+        int thePos = 0;
+        int listSize = getSize();
+        Node<E> temp = getHead();
+        for(int i = 0; i < listSize; i++){
+            if(!temp.equals(node)){
+                temp = temp.getNext();
+                thePos++;
+            }
+        }
+        return thePos;
     }
 
     //method to find a Node that contains the value passed to the method
@@ -151,17 +170,38 @@ public class ChristianHolder<E>
         return curr;
     }
 
+    /**
+     * findValuePosition returns the index of the list in which a node holding
+     * the passed value exists at.
+     * @param e the value to compare.
+     * @return returns the index number.
+     */
+    public int findValuePosition(E e){
+        int thePos = 0;
+        int listSize = getSize();
+        Node<E> temp = getHead();
+        for(int i = 0; i < listSize; i++){
+            if(temp.getE() != e){
+                temp = temp.getNext();
+                thePos++;
+            }
+        }
+        return thePos;
+    }
+
     //method to add a new node at the end of the list
     public void add(E e){
-        Node<E> toAdd = new Node<>(e, null, null);
+        Node<E> toAdd = new Node<>();
+        toAdd.setE(e);
         //if no head, put node at head
         if(getHead() == null){
             setHead(toAdd);
+            setTail(toAdd);
         }
         else{
             Node<E> curr = getHead();
             //move through the list until we reach the end
-            while(curr.getNext() != getHead()){
+            while(curr.getNext() != getHead() && curr.getNext() != null){
                 curr = curr.getNext();
             }
             //put the node at the end of the list
@@ -178,28 +218,6 @@ public class ChristianHolder<E>
 
     //method to put a node in a specific location in the list
     public void insertAtPos(E e, int aPosition){
-
-        //old code used temp variables to pass node data around
-        /* pass in the object to put and the intended position
-        create a new node
-        create 2 temp nodes
-        Node<E> toAdd = new Node<>(e, null, null);
-        Node<E> temp1;
-        Node<E> temp2;
-        //store the nodes previous to the intended position in temp 1
-        temp1 = findPosition(aPosition - 1);
-        //store the node currently in the intended position in temp 2
-        temp2 = findPosition(aPosition);
-        //set new node prev to temp 1
-        toAdd.setPrev(temp1);
-        //set new node next to temp 2
-        toAdd.setNext(temp2);
-        //set the holder tail reference to the added node
-        setTail(toAdd);
-        //set the current node next reference to the added node
-        temp1.setNext(toAdd); */
-
-        //new code 11/3/22
         //start at head
         Node<E> curr = getHead();
         //use a loop to move through the list
@@ -233,7 +251,7 @@ public class ChristianHolder<E>
     //method to remove the last node in the list and return it
     public Node<E> removeEnd(){
         //get the last node in the list first
-        Node<E> toReturn = findPosition(getSize() - 1);
+        Node<E> toReturn = findNodeAtPosition(getSize() - 1);
         //then get its prev node
         Node<E> secondToLast = toReturn.getPrev();
         //set the prev node as the last position by setting its next as head
@@ -251,8 +269,14 @@ public class ChristianHolder<E>
         //get node with the value to remove
         Node<E> toRemove = findValue(e);
         //set the previous node's next pointer to the node after toRemove
-        toRemove.getPrev().setNext(toRemove.getNext());
-        //set the next node's prev pointer to the node before toRemove
-        toRemove.getNext().setPrev(toRemove.getPrev());
+        if(toRemove.getNext() != null && toRemove.getPrev() != null) {
+            toRemove.getPrev().setNext(toRemove.getNext());
+            //set the next node's prev pointer to the node before toRemove
+            toRemove.getNext().setPrev(toRemove.getPrev());
+        }
+        else{
+            setHead(null);
+            setTail(null);
+        }
     }
 }

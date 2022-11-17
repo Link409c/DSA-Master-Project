@@ -10,7 +10,7 @@ public interface PlayerInterface {
     //add experience to the total and increase level.
     void levelUp(int exp);
 
-    //use an item in the inventory.
+    //use or equip an item in the inventory.
     void useItem(ChristianHolder<Item> items, String aName, String mode);
 
 }

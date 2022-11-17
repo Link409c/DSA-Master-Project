@@ -1,7 +1,5 @@
 package DungeonProject.Model;
 
-import ManualLinkedList.ChristianHolder;
-
 import java.io.File;
 
 public interface GameInterface {
@@ -19,5 +17,5 @@ public interface GameInterface {
     void continueFromSave(File afile);
 
     //end the game when the player dies or quits
-    void endGame();
+    void endGame(Player p);
 }

@@ -1,16 +1,51 @@
 package DungeonProject.Model;
 
+import RomanNumeralConverter.IntegerToRoman;
+
+/**
+ * Equipment is an Item that can be "equipped" by the player to enhance their stats.
+ */
 public class Equipment extends Item{
 
-    private EquipmentType equipmentType;
+    /**
+     * categorizeEClassByName sets equipment class according to the item's name.
+     * @param name the name of the item.
+     */
+    public void categorizeEClassByName(String name){
+        //weapons
+        if(name.equalsIgnoreCase("Wooden Sword") || name.equalsIgnoreCase("Sword")
+                || name.equalsIgnoreCase("Dagger") || name.equalsIgnoreCase("Greatsword")) {
+            setEquipmentClass(EquipmentClass.WEAPON);
+        }
+        //armor
+        else if(name.equalsIgnoreCase("Woolen Shirt") ||
+                name.equalsIgnoreCase("Leather Tunic") ||
+                name.equalsIgnoreCase("Mail Hauberk")){
+            setEquipmentClass(EquipmentClass.ARMOR);
+        }
+        //accessories
+        else if(name.equalsIgnoreCase("Ring of Might") ||
+                name.equalsIgnoreCase("Ring of Defense") ||
+                name.equalsIgnoreCase("Ring of Speed") ||
+                name.equalsIgnoreCase("Vital Pendant")){
+            setEquipmentClass(EquipmentClass.ACCESSORY);
+        }
+    }
+    private EquipmentClass equipmentClass;
 
-    public Equipment(EquipmentType equipmentType, String name, String description, int attack,
-                     int defense, int speed, int maxHealthPoints, int restore) {
-        super(ItemType.EQUIPMENT, name, description, attack, defense, speed, maxHealthPoints, restore);
-        this.equipmentType = equipmentType;
+    public Equipment(String name, int currentFloor) {
+        super(ItemType.EQUIPMENT, name, currentFloor);
+        categorizeEClassByName(name);
+        //roman numeral denotes equipment power / quality
+        IntegerToRoman itr = new IntegerToRoman();
+        setName(getName() + " " + itr.intToRoman(Math.floorDiv(currentFloor, 10)));
     }
 
-    public EquipmentType getEquipmentType() {
-        return equipmentType;
+    public void setEquipmentClass(EquipmentClass equipmentClass) {
+        this.equipmentClass = equipmentClass;
+    }
+
+    public EquipmentClass getEquipmentClass() {
+        return equipmentClass;
     }
 }

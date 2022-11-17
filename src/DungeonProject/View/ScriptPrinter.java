@@ -2,6 +2,7 @@ package DungeonProject.View;
 
 import java.util.Random;
 
+import DungeonProject.Model.Monster;
 import DungeonProject.Model.Player;
 
 /**
@@ -16,7 +17,7 @@ public class ScriptPrinter{
      * when the new game method is called.
      */
     public void printIntroScript(){
-        System.out.println("Welcome to Christian's Dungeon Crawler.");
+        System.out.println("\nWelcome to Christian's Dungeon Crawler.");
         System.out.println("This is a dungeon exploration game, where the player");
         System.out.println("will challenge the monsters within, floor by floor, and");
         System.out.println("see just how deep their skills can take them. Can you");
@@ -35,25 +36,25 @@ public class ScriptPrinter{
         int getScript = r.nextInt(1, 6);
         switch(getScript){
             case 1 ->{
-                System.out.println("Maybe this time, you'll get lucky.");
+                System.out.println("\nMaybe this time, you'll get lucky.");
             }
             case 2 ->{
-                System.out.println("They say if you're encountering enemies, " +
+                System.out.println("\nThey say if you're encountering enemies, " +
                         "you're headed in the right direction.");
             }
             case 3 ->{
-                System.out.println("I hope there's still some floor chicken.");
+                System.out.println("\nI hope there's still some floor chicken.");
             }
             case 4 ->{
-                System.out.println("If you're having trouble with the skeletons, " +
+                System.out.println("\nIf you're having trouble with the skeletons, " +
                         "try asking them what their favorite snack is.");
             }
             case 5 ->{
-                System.out.println("Call the Nintendo Power Hotline for live gaming tips at " +
-                        "425-885-7529! ($1.49 per minute)");
+                System.out.println("\nCall the Nintendo Power Hotline for live gaming tips at " +
+                        "856-371-0583! ($1.49 per minute)");
             }
             case 6 ->{
-                System.out.println("Aren't there any cheats for this game?");
+                System.out.println("\nAren't there any cheats for this game?");
             }
         }
     }
@@ -61,10 +62,10 @@ public class ScriptPrinter{
     /**
      * loadGameScript prints a short script confirming the selection and welcoming the player
      * back to the game.
-     * @param p
+     * @param p the Player object to load into the game.
      */
     public void printLoadGameScript(Player p){
-        System.out.println("Resuming your saved game.");
+        System.out.println("\nResuming your saved game.");
         System.out.println("Welcome back, " + p.getName() + ".");
     }
 
@@ -72,42 +73,79 @@ public class ScriptPrinter{
      * sectionScript method holds a script enticing the player to keep playing. it
      * prints the script based on the floor the player has reached when they move past
      * that section of the dungeon.
+     * @param currentFloor the current floor of the dungeon.
      */
 
     public void printSectionScript(int currentFloor) {
-        if(currentFloor < 10){
-            System.out.println("The depth you've achieved is but the surface of this " +
+        if(currentFloor == 10){
+            System.out.println("\nThe depth you've achieved is but the surface of this " +
                     "deep and twisting labyrinth.");
         }
-        else if(currentFloor >= 11 && currentFloor < 30){
-            System.out.println("You fought well, and delved far. But much lies " +
+        else if(currentFloor == 30){
+            System.out.println("\nYou fought well, and delved far. But much lies " +
                     "deeper within the dungeon.");
         }
-        else if(currentFloor >= 31 && currentFloor < 50){
-            System.out.println("Your skills have brought you far, your strength led you " +
+        else if(currentFloor == 50){
+            System.out.println("\nYour skills have brought you far, your strength led you " +
                     "to victory against many enemies, and your sense of adventure uncovered "
                     + "much. However, still more awaits.");
         }
-        else if(currentFloor >= 51 && currentFloor < 90){
-            System.out.println("There is little more to say of your success! A great adventurer " +
+        else if(currentFloor == 70){
+            System.out.println("\nThere is little more to say of your success! A great adventurer " +
                     "such as you has what it takes to reach what lies at the very core of these "
                     + "catacombs. Soon, it will be within your reach...");
         }
-        else if(currentFloor >= 91 && currentFloor <= 98){
-            System.out.println("You're nearly there! The nadir of this labyrinth is just below you.");
+        else if(currentFloor == 90){
+            System.out.println("\nYou're nearly there! The nadir of this labyrinth is just below you.");
         }
+    }
+
+    /**
+     * battleScript prints the encounter notification when a battle occurs.
+     * @param m the monster the player is battling.
+     */
+    public void printBattleScript(Monster m){
+        System.out.println("Battle! You face a " + m.getName() + ".");
+    }
+
+    /**
+     * reflectionScript prints the encounter notification when fighting the boss at the last
+     * level of the dungeon.
+     */
+    public void printReflectionScript(){
+        System.out.println("Battle! You face... yourself?");
+    }
+    /**
+     * finalLevelScript prints a script detailing the final encounter of the game.
+     */
+    public void printFinalLevelScript(){
+        System.out.println("\nAt last, you have reached what lies beneath everything.");
+        System.out.println("\nAdmire the strength you've gained; The battles you've won;" +
+                "The hardships you've faced.");
+        System.out.println("\nWas this adventure worth it?");
+        System.out.println("\nLook deep within and ask yourself this...");
+        System.out.println("\n... and as you turn your eyes forward, face this last trial.\n");
+        System.out.println("\nA foreboding presence, eerie yet familiar, lies ahead of you.");
     }
 
     /**
      * victoryScript method holds a script that is printed when the player clears the
      * final floor of the dungeon.
      */
-
     public void printVictoryScript() {
-        //code
+        //TODO Write this
     }
     
-    public void print(){
-    	
+    public void printEndGameScript(Player p, int currentFloor){
+        if(p.isDead()){
+            System.out.println("\nYou've braved the dungeon " + p.getGamesPlayed() + " times.");
+            System.out.println("You reached floor " + currentFloor + ".");
+            System.out.println("Enemies Killed: " + p.getKillCount());
+            System.out.println("Items collected: " + p.getItemsAcquired());
+            System.out.println("Floors Cleared: " + p.getFloorsCleared());
+            //quitting via the menu does not print results
+        }else{
+            System.out.println("\nYou Quit.");
+        }
     }
 }

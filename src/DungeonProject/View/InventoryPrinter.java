@@ -13,10 +13,18 @@ public class InventoryPrinter {
      * @param anInventory the inventory to be printed.
      */
     public void printItems(ChristianHolder<Item> anInventory) {
-    	Item item = (Item) anInventory.getHead().getE();
-    	for(int i = 0; i < anInventory.getSize(); i++) {
-    		System.out.println(item.getName());
-    	}
+    	if(anInventory.getHead() == null) {
+			System.out.println("You have no items of this type in your inventory.");
+		}else{
+			Item item = anInventory.getHead().getE();
+			int thisSize = anInventory.getSize();
+			String itemType = item.getType().toString();
+			WindowPrinter w = new WindowPrinter();
+			w.printItemsHeader(itemType);
+			for (int i = 0; i < thisSize; i++) {
+				System.out.println(item.getName());
+			}
+		}
     }
     
     public InventoryPrinter() {

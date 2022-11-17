@@ -2,6 +2,7 @@ package DungeonProject.Model;
 
 import DungeonProject.Control.BattleMenu;
 import DungeonProject.View.MenuPrinter;
+import DungeonProject.View.ScriptPrinter;
 import DungeonProject.View.WindowPrinter;
 
 import java.util.InputMismatchException;
@@ -18,69 +19,43 @@ public class Battle {
      * accept player input. The user will battle with the monster until one of their HP hits zero.
      * Then, if the player wins, they will gain experience and (if possible) an item dropped by the enemy.
      *
-     * @param p The player object.
-     * @param m The monster the player will battle.
-     * @return returns true if the player wins; false if not.
+     * @param r the room object.
+     * @return returns the updated room object.
      */
-    public boolean runBattle(Player p, Monster m) {
-        System.out.println("Battle! You encounter a " + m.getName() + ".");
+    public Room runBattle(Room r) {
+        Player p = r.getThePlayer();
+        Monster m = r.getEnemy();
+        ScriptPrinter battleScript = new ScriptPrinter();
+        if(m.getMonsterType() != MonsterType.Reflection) {
+            battleScript.printBattleScript(m);
+        }
+        else{
+            battleScript.printReflectionScript();
+        }
         WindowPrinter w = new WindowPrinter();
         //variables to hold defense stat
         int playerActualDefense = p.getDefensePoints();
-        int monsterActualDefense = m.getDefensePoints();
         //while the player and monster are alive, battle
-        //action flag to progress state of battle
-        boolean action = false, playerWon = false;
         BattleMenu battleMenu = new BattleMenu();
         while (!p.isDead() && !m.isDead()) {
             //print the battle window
             w.printBattleWindow(p, m);
             //if player is faster they go first
             if (p.getSpeed() > m.getSpeed()) {
-                while (!action) {
-                    action = battleMenu.accessMenu(p, m);
-                }
-                m.attack(p);
-
-                //implement method in monster class for rudimentary battle AI
-                /* if(m.getCurrHealthPoints() <= m.getCurrHealthPoints()/3) {
-                    if(p.getCurrHealthPoints() <= p.getCurrHealthPoints()/4 &&
-                       m.getCurrHealthPoints() >= p.getCurrHealthPoints()){
-                       m.attack(p);
-                    }
-                }else{
-                    m.defend();
-                }*/
-
-                //otherwise the monster attacks first
+                r = battleMenu.accessMenu(r);
+                p.setCurrHealthPoints(p.getCurrHealthPoints() - m.attack(p));
             } else {
-                m.attack(p);
+                p.setCurrHealthPoints(p.getCurrHealthPoints() - m.attack(p));
                 if (!p.isDead()) {
-                    while (!action) {
-                        action = battleMenu.accessMenu(p, m);
-                    }
+                    r = battleMenu.accessMenu(r);
                 }
             }
+            //reset defense if either being defended
+            if (p.getDefensePoints() != playerActualDefense) {
+                p.setDefensePoints(playerActualDefense);
+            }
         }
-        //reset defense if either being defended
-        if (p.getDefensePoints() != playerActualDefense) {
-            p.setDefensePoints(playerActualDefense);
-        }
-
-        /* if(m.getDefensePoints() != monsterActualDefense){
-                m.setDefensePoints(monsterActualDefense);
-           }*/
-
-        //check if either being is dead
-        if (p.isDead()) {
-            //end the game if player is dead
-            playerWon = false;
-            //if monster is dead end the battle
-        } else if (m.isDead()) {
-            playerWon = true;
-        }
-        //return value used for battle reward call
-        return playerWon;
+        return r;
     }
 
     public Battle(){

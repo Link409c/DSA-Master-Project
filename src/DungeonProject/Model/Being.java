@@ -1,5 +1,7 @@
 package DungeonProject.Model;
 
+import java.util.Random;
+
 public class Being implements BeingInterface {
 
     /**
@@ -8,9 +10,9 @@ public class Being implements BeingInterface {
      * @param b The target of the attack.
      */
     @Override
-    public void attack(Being b) {
+    public int attack(Being b) {
         //variable for damage calculation
-        int inflicted;
+        int inflicted = 0;
         //check if target exists
         if(b != null){
             //check if target is dead
@@ -18,19 +20,33 @@ public class Being implements BeingInterface {
                 //check if object is player or monster
                 //prints a different message to show action
                 //calculate damage and reduce target hp accordingly
-                if(getClass().equals(Player.class)) {
-                    System.out.println("You attack " + b.getName() + ".");
-                    inflicted = (getAttackPoints() - b.getDefensePoints());
-                    b.setCurrHealthPoints(b.getCurrHealthPoints() - inflicted);
-                    System.out.println("You deal " + inflicted + " damage.");
-                }else if(getClass().equals(Monster.class)){
-                    System.out.println(b.getName() + "attacks!");
-                    inflicted = (b.getAttackPoints() - getDefensePoints());
-                    setCurrHealthPoints(getCurrHealthPoints() - inflicted);
-                    System.out.println("You take " + inflicted + " damage.");
+                Random r = new Random();
+                int crit = r.nextInt(0, 21);
+                //critical hit chance
+                if(crit == 20){
+                    if (getClass().equals(Player.class)) {
+                        System.out.println("You attack " + b.getName() + ".");
+                        inflicted = (int) (getAttackPoints()*1.5 - b.getDefensePoints());
+                        System.out.println("Critical hit! You deal " + inflicted + " damage.");
+                    } else if (getClass().equals(Monster.class)) {
+                        System.out.println(b.getName() + "attacks! Critical hit!");
+                        inflicted = (int) (b.getAttackPoints()*1.5 - getDefensePoints());
+                        System.out.println("You take " + inflicted + " damage.");
+                    }
+                }else {
+                    if (getClass().equals(Player.class)) {
+                        System.out.println("You attack " + b.getName() + ".");
+                        inflicted = (getAttackPoints() - b.getDefensePoints());
+                        System.out.println("You deal " + inflicted + " damage.");
+                    } else if (getClass().equals(Monster.class)) {
+                        System.out.println(b.getName() + "attacks!");
+                        inflicted = (b.getAttackPoints() - getDefensePoints());
+                        System.out.println("You take " + inflicted + " damage.");
+                    }
                 }
             }
         }
+        return inflicted;
     }
 
     /**
@@ -109,7 +125,7 @@ public class Being implements BeingInterface {
     }
 
     public void setCurrHealthPoints(int currentHealthPoints) {
-        this.currentHealthPoints = currentHealthPoints;
+        this.currentHealthPoints = Math.min(currentHealthPoints, getMaxHealthPoints());
     }
 
     public int getAttackPoints() {

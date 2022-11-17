@@ -22,7 +22,7 @@ public class Inventory {
         ChristianHolder<Item> newInventory = new ChristianHolder<>();
         int inventorySize = getItems().getSize();
         for (int i = 0; i < inventorySize; i++) {
-            Item temp = getItems().findPosition(i).getE();
+            Item temp = getItems().findNodeAtPosition(i).getE();
             //populate it with item objects of the given type
             if (temp.getType() == itemType) {
                 newInventory.add(temp);
@@ -36,6 +36,13 @@ public class Inventory {
 
     public ChristianHolder<Item> getItems() {
         return inventory;
+    }
+
+    public void setItems(ChristianHolder<Item> theItems){
+        inventory = theItems;
+    }
+
+    public Inventory(){
     }
 
     public Inventory(ChristianHolder<Item> inventory) {

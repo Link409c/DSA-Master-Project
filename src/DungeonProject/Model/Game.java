@@ -2,16 +2,19 @@ package DungeonProject.Model;
 
 import DungeonProject.Control.DungeonMenu;
 import DungeonProject.Control.MainMenu;
+import DungeonProject.View.DungeonMapPrinter;
 import DungeonProject.View.ScriptPrinter;
-import ManualLinkedList.ChristianHolder;
+import DungeonProject.View.WindowPrinter;
+
 import java.io.File;
 import java.util.Scanner;
 
 public class Game implements GameInterface{
 
     /**
-     * Run is a container method for starting the game.
+     * Play is a container method for starting the game.
      */
+    //TODO test this
     public void play(){
     	MainMenu mainMenu = new MainMenu();
     	int option = mainMenu.accessMenu();
@@ -24,13 +27,42 @@ public class Game implements GameInterface{
     	if(option == 3) {
     		//continueFromSave();
     	}
-        System.out.println("Entering the Dungeon...");
-        //call dungeon menu method to begin the game
+        System.out.println("\nEntering the Dungeon...");
+        DungeonMapPrinter p = new DungeonMapPrinter();
+        p.mapInfoFormatter(getThePlayer(), getDungeon());
+        p.printFloorMap();
         DungeonMenu d = new DungeonMenu();
+        boolean action = false;
         while(!getThePlayer().isDead()) {
-        	d.accessMenu(getThePlayer());
+            while(!action) {
+                //give player control
+                Dungeon updatedD = d.accessMenu(getDungeon(), getThePlayer());
+                if(!updatedD.equals(getDungeon())){
+                    setDungeon(updatedD);
+                    action = true;
+                }
+                //action is taken when player moves to a new room
+            }
+            RoomChecker checkCurrRoom = new RoomChecker();
+            //get the room to check which should contain player
+            Room curr = getDungeon().getDungeonRooms().findNodeAtPosition(getDungeon().getPlayerPosition()).getE();
+            //check the room, which will trigger battle or item acquisition
+            curr = checkCurrRoom.checkRoom(curr);
+            //update player after winning battle or acquiring item
+            setThePlayer(curr.getThePlayer());
+            //continue until exit
+            //when exit found, progress to next level
+            if(curr.isTheExit()) {
+                getThePlayer().setFloorsCleared(getThePlayer().getFloorsCleared()+1);
+                DungeonLevelProgression dLP = new DungeonLevelProgression();
+                setDungeon(dLP.progressNextLevel(getDungeon(), getThePlayer()));
+            }
+            else{
+                //otherwise update the current room after battles / item acquisition
+                getDungeon().getDungeonRooms().findNodeAtPosition(getDungeon().getPlayerPosition()).setE(curr);
+            }
         }
-        endGame();
+        endGame(getThePlayer());
     }
 
     /**
@@ -39,21 +71,29 @@ public class Game implements GameInterface{
      * character name, creates a new player object, sets the current floor to 1, and calls the createGame
      * method to construct the dungeon and begin gameplay.
      */
+    @Override
     public void newGame(){
+        //clear the player and dungeon object if any
+        setThePlayer(null);
         //print the intro script
         ScriptPrinter newScript = new ScriptPrinter();
         newScript.printIntroScript();
-        System.out.println("Starting a new game.");
+        System.out.println("\nStarting a new game.");
         //prompt the player for name input
         Scanner in = new Scanner(System.in);
-        System.out.println("Enter your hero's name: ");
-        String yourName = in.nextLine();
+        String yourName;
+        System.out.println("\nEnter your hero's name.\n16-Character Limit: ");
+        try {
+            yourName = in.nextLine();
+        }catch(NameFormatException n){
+            yourName = in.nextLine();
+        }
         //create a new player object using the name
         //set it as the player
         setThePlayer(new Player(yourName));
         DungeonBuilder db = new DungeonBuilder();
         //call createDungeon method
-        setDungeon(db.createDungeon(getThePlayer()));
+        setDungeon(db.createNewDungeon(getThePlayer()));
     }
 
     /**
@@ -64,20 +104,22 @@ public class Game implements GameInterface{
      */
     @Override
     public void continueGame() {
-        if(getThePlayer() == null){
-            System.out.println("There is no current game in progress.\nStart a new game, or " +
+        if(getThePlayer() == null && getDungeon() == null){
+            System.out.println("\nThere is no current game in progress.\nStart a new game, or " +
                     "load a save file.");
             MainMenu mainMenu = new MainMenu();
             mainMenu.accessMenu();
         }
         else {
+            //clear the dungeon if any
+            setDungeon(null);
             //print continue script
             ScriptPrinter continueScript = new ScriptPrinter();
             continueScript.printContinueScript();
             //using the existing player object, continue in a new dungeon
             DungeonBuilder db = new DungeonBuilder();
             //call createDungeon method
-            setDungeon(db.createDungeon(getThePlayer()));
+            setDungeon(db.createNewDungeon(getThePlayer()));
         }
     }
 
@@ -99,51 +141,29 @@ public class Game implements GameInterface{
      * are printed. If they quit, the results are not printed. It prompts the user to continue, with
      * the current player object being used to create a new randomized dungeon.
      */
+    //TODO finish this method to control end game functions.
     public void endGame(Player p) {
-        //change output based on how the method was called
-        //player death prints results
-        if(p.isDead()){
-            p.setGamesPlayed(p.getGamesPlayed() + 1);
-            System.out.println("You died.");
-            System.out.println("You've braved the dungeon " + p.getGamesPlayed() + " times.");
-            System.out.println("Enemies Killed: " + p.getKillCount());
-            System.out.println("Items collected: " + p.getItemsAcquired());
-            System.out.println("Floors Cleared: " + p.getFloorsCleared());
-        //quitting via the menu does not print results
-        }else{
-            System.out.println("You Quit.");
-        }
-        //prompt user to continue
-        String quit;
-        System.out.println("Continue Playing? Y/N: ");
-        Scanner in = new Scanner(System.in);
-        quit = in.nextLine();
-        //if yes, call continue game method
-        if(quit.equalsIgnoreCase("Y") || quit.equalsIgnoreCase("Yes")){
-            continueGame();
-        //if no, quit the game
-        }else if(quit.equalsIgnoreCase("N") || quit.equalsIgnoreCase("No")){
-            //print end game script
+        p.setGamesPlayed(p.getGamesPlayed() + 1);
+        WindowPrinter endWindow = new WindowPrinter();
+        if(p.isDead()) {
+            endWindow.printDeathWindow();
             ScriptPrinter end = new ScriptPrinter();
-            end.printEndGameScript(getDungeon().getCurrentFloor());
-            System.exit(0);
+            end.printEndGameScript(p, getDungeon().getCurrentFloor());
+        }
+        else{
+            endWindow.printQuitWindow();
         }
     }
 
-    //dungeon object
     private Dungeon dungeon;
 
-    //player object
     private Player thePlayer;
-
-    //getters and setters
 
     public Game(){
 
     }
 
-    public Game(Dungeon dungeon, Player thePlayer, ChristianHolder<Monster> dungeonMonsters,
-                ChristianHolder<Item> dungeonItems, int currentFloor) {
+    public Game(Dungeon dungeon, Player thePlayer) {
         this.dungeon = dungeon;
         this.thePlayer = thePlayer;
     }

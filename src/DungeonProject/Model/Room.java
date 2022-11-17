@@ -1,8 +1,6 @@
 package DungeonProject.Model;
 
-import ManualLinkedList.Node;
-
-public class Room extends Node<Room> {
+public class Room{
 	
 	private Player thePlayer;
 	
@@ -46,9 +44,7 @@ public class Room extends Node<Room> {
 
     public Room(){}
 
-    public Room(E e, Node<Room> next, Node<Room> prev, Player thePlayer, Monster enemy,
-                Item treasure, boolean theExit) {
-        super(e, next, prev);
+    public Room(Player thePlayer, Monster enemy, Item treasure, boolean theExit) {
         this.thePlayer = thePlayer;
         this.enemy = enemy;
         this.treasure = treasure;
