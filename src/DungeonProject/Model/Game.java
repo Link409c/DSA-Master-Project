@@ -1,68 +1,75 @@
 package DungeonProject.Model;
 
 import DungeonProject.Control.DungeonMenu;
+import DungeonProject.Control.EndGameMenu;
 import DungeonProject.Control.MainMenu;
 import DungeonProject.View.DungeonMapPrinter;
+import DungeonProject.View.MenuPrinter;
 import DungeonProject.View.ScriptPrinter;
 import DungeonProject.View.WindowPrinter;
 
 import java.io.File;
 import java.util.Scanner;
 
-public class Game implements GameInterface{
+public class Game implements GameInterface {
 
     /**
      * Play is a container method for starting the game.
      */
-    //TODO test this
-    public void play(){
-    	MainMenu mainMenu = new MainMenu();
-    	int option = mainMenu.accessMenu();
-    	if(option == 1) {
-    		newGame();
-    	}
-    	if(option == 2) {
-    		continueGame();
-    	}
-    	if(option == 3) {
-    		//continueFromSave();
-    	}
-        System.out.println("\nEntering the Dungeon...");
-        DungeonMapPrinter p = new DungeonMapPrinter();
-        p.mapInfoFormatter(getThePlayer(), getDungeon());
-        p.printFloorMap();
-        DungeonMenu d = new DungeonMenu();
-        boolean action = false;
-        while(!getThePlayer().isDead()) {
-            while(!action) {
-                //give player control
-                Dungeon updatedD = d.accessMenu(getDungeon(), getThePlayer());
-                if(!updatedD.equals(getDungeon())){
-                    setDungeon(updatedD);
-                    action = true;
+    public void play() {
+        boolean play = true;
+        while (play) {
+            MainMenu mainMenu = new MainMenu();
+            int option = mainMenu.accessMenu();
+            switch (option) {
+                case 1 -> newGame();
+                case 2 -> continueGame();
+                case 3 -> {
+                    //File aFile = new File(path here);
+                    //continueFromSave(aFile);
                 }
-                //action is taken when player moves to a new room
             }
-            RoomChecker checkCurrRoom = new RoomChecker();
-            //get the room to check which should contain player
-            Room curr = getDungeon().getDungeonRooms().findNodeAtPosition(getDungeon().getPlayerPosition()).getE();
-            //check the room, which will trigger battle or item acquisition
-            curr = checkCurrRoom.checkRoom(curr);
-            //update player after winning battle or acquiring item
-            setThePlayer(curr.getThePlayer());
-            //continue until exit
-            //when exit found, progress to next level
-            if(curr.isTheExit()) {
-                getThePlayer().setFloorsCleared(getThePlayer().getFloorsCleared()+1);
-                DungeonLevelProgression dLP = new DungeonLevelProgression();
-                setDungeon(dLP.progressNextLevel(getDungeon(), getThePlayer()));
+            System.out.println("\nEntering the Dungeon...");
+            DungeonMapPrinter p = new DungeonMapPrinter();
+            p.mapInfoFormatter(getThePlayer(), getDungeon());
+            p.printFloorMap(getDungeon());
+            DungeonMenu d = new DungeonMenu();
+            boolean action = false;
+            while (!getThePlayer().isDead()) {
+                int newPlayerRoom, currPlayerRoom;
+                while (!action) {
+                    //give player control
+                    currPlayerRoom = getDungeon().getPlayerPosition();
+                    Dungeon updatedD = d.accessMenu(getDungeon(), getThePlayer());
+                    newPlayerRoom = updatedD.getPlayerPosition();
+                    if (currPlayerRoom != newPlayerRoom) {
+                        setDungeon(updatedD);
+                        action = true;
+                    }
+                    //action is taken when player moves to a new room
+                }
+                action = false;
+                RoomChecker checkCurrRoom = new RoomChecker();
+                //get the room to check which should contain player
+                Room curr = getDungeon().getDungeonRooms().findNodeAtPosition(getDungeon().getPlayerPosition()).getE();
+                //check the room, which will trigger battle or item acquisition
+                curr = checkCurrRoom.checkRoom(curr);
+                //update player after winning battle or acquiring item
+                setThePlayer(curr.getThePlayer());
+                //continue until exit
+                //when exit found, progress to next level
+                if (curr.isTheExit()) {
+                    getThePlayer().setFloorsCleared(getThePlayer().getFloorsCleared() + 1);
+                    DungeonLevelProgression dLP = new DungeonLevelProgression();
+                    setDungeon(dLP.progressNextLevel(getDungeon(), getThePlayer()));
+                } else {
+                    //otherwise update the current room after battles / item acquisition
+                    getDungeon().getDungeonRooms().findNodeAtPosition(getDungeon().getPlayerPosition()).setE(curr);
+                }
             }
-            else{
-                //otherwise update the current room after battles / item acquisition
-                getDungeon().getDungeonRooms().findNodeAtPosition(getDungeon().getPlayerPosition()).setE(curr);
-            }
+            play = endGame(getThePlayer());
         }
-        endGame(getThePlayer());
+        System.exit(0);
     }
 
     /**
@@ -85,6 +92,7 @@ public class Game implements GameInterface{
         System.out.println("\nEnter your hero's name.\n16-Character Limit: ");
         try {
             yourName = in.nextLine();
+            tryName(yourName);
         }catch(NameFormatException n){
             yourName = in.nextLine();
         }
@@ -127,11 +135,11 @@ public class Game implements GameInterface{
      * continueFromSave method uses information from a file passed in to the
      * method in order to construct a Game object, allowing the user to pick
      * up where they left off after a previous game was saved.
-     * @param afile the file passed in to the method containing
+     * @param aFile the file passed in to the method containing
      *              Game object data.
      */
     @Override
-    public void continueFromSave(File afile) {
+    public void continueFromSave(File aFile) {
         //code
     }
 
@@ -142,16 +150,24 @@ public class Game implements GameInterface{
      * the current player object being used to create a new randomized dungeon.
      */
     //TODO finish this method to control end game functions.
-    public void endGame(Player p) {
+    public boolean endGame(Player p) {
         p.setGamesPlayed(p.getGamesPlayed() + 1);
         WindowPrinter endWindow = new WindowPrinter();
-        if(p.isDead()) {
-            endWindow.printDeathWindow();
-            ScriptPrinter end = new ScriptPrinter();
-            end.printEndGameScript(p, getDungeon().getCurrentFloor());
-        }
-        else{
-            endWindow.printQuitWindow();
+        endWindow.printDeathWindow();
+        ScriptPrinter end = new ScriptPrinter();
+        end.printEndGameScript(p, getDungeon().getCurrentFloor());
+        EndGameMenu endGameMenu = new EndGameMenu();
+        return endGameMenu.accessMenu();
+    }
+
+    /**
+     * tryName checks player name field and throws custom exception if incorrect format.
+     * @param aName the name to check.
+     * @throws NameFormatException an exception detailing correct format to user.
+     */
+    public void tryName(String aName) throws NameFormatException{
+        if(aName.length() > 17){
+            throw new NameFormatException();
         }
     }
 

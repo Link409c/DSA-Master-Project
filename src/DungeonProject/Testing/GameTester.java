@@ -1,18 +1,73 @@
 package DungeonProject.Testing;
 
+import DungeonProject.Control.DungeonMenu;
 import DungeonProject.Model.*;
+import DungeonProject.View.DungeonMapPrinter;
 import DungeonProject.View.WindowPrinter;
-
 import java.awt.*;
 import java.util.Arrays;
 
 public class GameTester {
 
     public static void main(String[] args) {
+
         //testing gameplay
 
-        /*Game game = new Game();
-        game.play();*/
+        Game game = new Game();
+        game.play();
+
+        //testing movement
+
+        /*Player c = new Player("Christian Simpson");
+        game.setThePlayer(c);
+        DungeonMenu dm = new DungeonMenu();
+        DungeonBuilder db = new DungeonBuilder();
+        game.setDungeon(db.createNewDungeon(game.getThePlayer()));
+        String test = game.getDungeon().toString();
+        System.out.println();
+        System.out.println(test);
+        dm.accessMenu(game.getDungeon(), game.getThePlayer());
+
+        game.getDungeon().getDungeonRooms().getHead().getE().setThePlayer(game.getThePlayer());
+        game.getDungeon().setPlayerPosition(0);
+        test = game.getDungeon().toString();
+        System.out.println(test);
+        dm.accessMenu(game.getDungeon(), game.getThePlayer());*/
+
+        //testing dungeon construction
+
+        /*Player c = new Player("Christian Simpson");
+        game.setThePlayer(c);
+        DungeonBuilder db = new DungeonBuilder();
+        game.setDungeon(db.createNewDungeon(game.getThePlayer()));
+        String test = game.getDungeon().toString();
+        System.out.println();
+        System.out.println(test);
+        game.getThePlayer().setFloorsCleared(game.getThePlayer().getFloorsCleared()+1);
+        DungeonLevelProgression dLP = new DungeonLevelProgression();
+        game.setDungeon(dLP.progressNextLevel(game.getDungeon(), game.getThePlayer()));
+        test = game.getDungeon().toString();
+        System.out.println();
+        System.out.println(test);
+        game.getDungeon().setCurrentFloor(22);
+        game.getThePlayer().setFloorsCleared(game.getThePlayer().getFloorsCleared()+1);
+        game.setDungeon(dLP.progressNextLevel(game.getDungeon(), game.getThePlayer()));
+        test = game.getDungeon().toString();
+        System.out.println();
+        System.out.println(test);
+        game.getDungeon().setCurrentFloor(35);
+        game.getThePlayer().setFloorsCleared(game.getThePlayer().getFloorsCleared()+1);
+        game.setDungeon(dLP.progressNextLevel(game.getDungeon(), game.getThePlayer()));
+        test = game.getDungeon().toString();
+        System.out.println();
+        System.out.println(test);
+        game.getDungeon().setCurrentFloor(98);
+        game.getThePlayer().setFloorsCleared(game.getThePlayer().getFloorsCleared()+1);
+        game.setDungeon(dLP.progressNextLevel(game.getDungeon(), game.getThePlayer()));
+        test = game.getDungeon().toString();
+        System.out.println();
+        System.out.println(test);*/
+
 
         //testing string format outputs
 
@@ -162,6 +217,28 @@ public class GameTester {
         for(int i = 0; i < 3; i++) {
             String theItem = types[i].toString();
             w.printItemsHeader(theItem);*/
+
+        //test map printing
+
+        /*Player c = new Player("Christian Simpson");
+        game.setThePlayer(c);
+        DungeonBuilder db = new DungeonBuilder();
+        game.setDungeon(db.createNewDungeon(game.getThePlayer()));
+        System.out.println("\n" +game.getDungeon().getDungeonRooms().getSize());
+        DungeonMapPrinter mapPrinter = new DungeonMapPrinter();
+        mapPrinter.mapInfoFormatter(c, game.getDungeon());
+        mapPrinter.mapLayoutFormatter(game.getDungeon());
+        mapPrinter.printFloorMap(game.getDungeon());*/
+
+        //testing endgame function
+
+        /*Player c = new Player("Christian");
+        game.setThePlayer(c);
+        DungeonBuilder db = new DungeonBuilder();
+        game.setDungeon(db.createNewDungeon(game.getThePlayer()));
+        c.setCurrHealthPoints(0);
+        game.endGame(c);*/
+
         }
 
     }

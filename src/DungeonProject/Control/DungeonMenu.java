@@ -28,12 +28,8 @@ public class DungeonMenu{
             dm.printDungeonMenu();
             try {
                 choice = in.nextInt();
-                if (choice <= 0 || choice > 6) {
-                    throw new MenuInputException();
-                }
+                tryInput(choice);
             } catch (MenuInputException invalidInput) {
-                System.out.println("Choose Left (1), Right (2), Map (3), " +
-                        "Status (4), Inventory (5), or Quit (6).");
                 choice = in.nextInt();
             }
             switch (choice) {
@@ -63,7 +59,7 @@ public class DungeonMenu{
                     DungeonMapPrinter mapPrinter = new DungeonMapPrinter();
                     mapPrinter.mapInfoFormatter(p, d);
                     mapPrinter.mapLayoutFormatter(d);
-                    mapPrinter.printFloorMap();
+                    mapPrinter.printFloorMap(d);
                 }
                 //check status
                 case 4 -> {
@@ -80,11 +76,22 @@ public class DungeonMenu{
                     WindowPrinter winP = new WindowPrinter();
                     winP.printQuitWindow();
                     EndGameMenu endM = new EndGameMenu();
-                    endM.accessMenu();
+                    boolean toContinue = endM.accessMenu();
+                    if(!toContinue){
+                        System.exit(0);
+                    }else{
+                        //TODO figure out how to quit from dungeon menu
+                    }
                 }
             }
         } while (!loopEnd);
         return d;
+    }
+
+    public void tryInput(int choice) throws MenuInputException {
+        if (choice < 1 || choice > 6) {
+            throw new MenuInputException();
+        }
     }
 
 }

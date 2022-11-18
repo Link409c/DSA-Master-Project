@@ -7,30 +7,34 @@ import java.util.Scanner;
 
 public class EndGameMenu {
 
-    public void accessMenu(){
+    public boolean accessMenu(){
         MenuPrinter endMenu = new MenuPrinter();
         endMenu.printEndGameMenu();
         Scanner in = new Scanner(System.in);
         int choice;
+        boolean choose = false;
         try{
             choice = (in.nextInt());
-            if(choice <= 0 || choice > 2 ){
-                throw new MenuInputException();
-            }
+            tryInput(choice);
         }catch(MenuInputException invalidInput){
-            System.out.println("Choose Continue (1) or Quit (2).");
             choice = (in.nextInt());
         }
         switch(choice){
             case 1 -> {
-                MainMenu mainM = new MainMenu();
-                mainM.accessMenu();
+                choose = true;
             }
-
-            case 2 -> System.exit(0);
+            case 2 -> {
+                break;
+            }
         }
+        return choose;
     }
 
+    public void tryInput(int choice) throws MenuInputException {
+        if (choice < 1 || choice > 2) {
+            throw new MenuInputException();
+        }
+    }
     public EndGameMenu(){
 
     }

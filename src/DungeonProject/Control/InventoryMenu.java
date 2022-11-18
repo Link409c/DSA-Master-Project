@@ -21,11 +21,8 @@ public class InventoryMenu {
         int choice;
         try{
             choice = in.nextInt();
-            if(choice <= 0 || choice > 4 ){
-                throw new MenuInputException();
-            }
+            tryInput(choice);
         }catch(MenuInputException invalidInput){
-            System.out.println("Choose Items (1), Equip (2), Key (3), or Return (4).");
             choice = in.nextInt();
         }
         Inventory currInventory = p.getInventory();
@@ -38,28 +35,30 @@ public class InventoryMenu {
                 InventoryPrinter invPr = new InventoryPrinter();
                 invPr.printItems(subInventory);
                 m.printUsableMenu();
-                choice = in.nextInt();
+                try{
+                    choice = in.nextInt();
+                    tryInput(choice);
+                }catch(MenuInputException invalidInput){
+                    choice = in.nextInt();
+                }
                 switch (choice) {
                     case 1 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "use");
-                        in.nextLine();
                     }
                     case 2 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "description");
-                        in.nextLine();
                     }
                     case 3 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "drop");
-                        in.nextLine();
                     }
                     case 4 -> {
                         break;
@@ -72,28 +71,30 @@ public class InventoryMenu {
                 InventoryPrinter invPr = new InventoryPrinter();
                 invPr.printItems(subInventory);
                 m.printEquipmentMenu();
-                choice = in.nextInt();
+                try{
+                    choice = in.nextInt();
+                    tryInput(choice);
+                }catch(MenuInputException invalidInput){
+                    choice = in.nextInt();
+                }
                 switch (choice) {
                     case 1 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "equip");
-                        in.nextLine();
                     }
                     case 2 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "description");
-                        in.nextLine();
                     }
                     case 3 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "drop");
-                        in.nextLine();
                     }
                     case 4 -> {
                         break;
@@ -106,28 +107,30 @@ public class InventoryMenu {
                 InventoryPrinter invPr = new InventoryPrinter();
                 invPr.printItems(subInventory);
                 m.printKeyItemsMenu();
-                choice = in.nextInt();
+                try{
+                    choice = in.nextInt();
+                    tryInput(choice);
+                }catch(MenuInputException invalidInput){
+                    choice = in.nextInt();
+                }
                 switch (choice) {
                     case 1 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "use");
-                        in.nextLine();
                     }
                     case 2 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "description");
-                        in.nextLine();
                     }
                     case 3 -> {
                         System.out.println("Which Item? :: ");
                         in.nextLine();
                         itemName = in.nextLine();
                         p.useItem(subInventory, itemName, "drop");
-                        in.nextLine();
                     }
                     case 4 -> {
                         break;
@@ -139,5 +142,11 @@ public class InventoryMenu {
             }
         }
         return p;
+    }
+
+    public void tryInput(int choice) throws MenuInputException {
+        if (choice < 1 || choice > 4) {
+            throw new MenuInputException();
+        }
     }
 }

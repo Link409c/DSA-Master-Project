@@ -43,7 +43,7 @@ public class ScriptPrinter{
                         "you're headed in the right direction.");
             }
             case 3 ->{
-                System.out.println("\nI hope there's still some floor chicken.");
+                System.out.println("\nI hope there's some floor chicken on the next level.");
             }
             case 4 ->{
                 System.out.println("\nIf you're having trouble with the skeletons, " +
@@ -98,6 +98,10 @@ public class ScriptPrinter{
         else if(currentFloor == 90){
             System.out.println("\nYou're nearly there! The nadir of this labyrinth is just below you.");
         }
+    }
+
+    public void printExitFoundScript(){
+        System.out.println("You found the Exit! Descending to the next floor...");
     }
 
     /**

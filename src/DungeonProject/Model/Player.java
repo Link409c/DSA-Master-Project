@@ -89,12 +89,10 @@ public class Player extends Being implements PlayerInterface {
                 }
             } else if (mode.equalsIgnoreCase("equip")) {
                 //determine which slot the item goes in
-                if (theItem instanceof Equipment) {
+                if (theItem.getType() == ItemType.EQUIPMENT) {
                     Equipment[] e = getEquipment();
-                    int theIndex = 3;
-                    if (((Equipment) theItem).getEquipmentClass() == EquipmentClass.WEAPON) {
-                        theIndex = 0;
-                    } else if (((Equipment) theItem).getEquipmentClass() == EquipmentClass.ARMOR) {
+                    int theIndex = 0;
+                    if (((Equipment) theItem).getEquipmentClass() == EquipmentClass.ARMOR) {
                         theIndex = 1;
                     } else if (((Equipment) theItem).getEquipmentClass() == EquipmentClass.ACCESSORY) {
                         theIndex = 2;
@@ -241,7 +239,7 @@ public class Player extends Being implements PlayerInterface {
         setKillCount(0);
         setFloorsCleared(0);
         setItemsAcquired(0);
-        setGamesPlayed(1);
+        setGamesPlayed(0);
     }
 
     public Player(String name, int healthPoints, int attackPoints, int defensePoints,

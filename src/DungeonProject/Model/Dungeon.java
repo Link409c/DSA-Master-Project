@@ -1,6 +1,7 @@
 package DungeonProject.Model;
 
 import ManualLinkedList.ChristianHolder;
+import ManualLinkedList.Node;
 
 /**
  * Dungeon class is the environment the Dungeon Crawler Game will be played in. Each instance
@@ -9,7 +10,43 @@ import ManualLinkedList.ChristianHolder;
  */
 public class Dungeon {
 
-    //getters, setters, and global variables
+    /**
+     * toString puts the rooms and their contents in a list.
+     * @return returns a list of the dungeon's level, size, and room objects and their contents.
+     */
+    @Override
+    public String toString(){
+        StringBuilder toReturn = new StringBuilder();
+        int size = getDungeonRooms().getSize();
+        if(size == 0){
+            toReturn = new StringBuilder("This dungeon is empty.");
+            return toReturn.toString();
+        }
+        Node<Room> currNode = getDungeonRooms().getHead();
+        Room curr = currNode.getE();
+        toReturn.append("Current Floor: ").append(getCurrentFloor()).append("\n");
+        toReturn.append("Size: ").append(size).append("\n");
+        toReturn.append("Player Position: ").append(getPlayerPosition()).append("\n");
+        for(int i = 0; i < size; i++){
+            toReturn.append("Room ").append(i+1).append(": ");
+            if(curr.getThePlayer() != null){
+                toReturn.append("Player").append(" | ");
+            }
+            if(curr.getEnemy() != null) {
+                toReturn.append(curr.getEnemy().getName()).append(" | ");
+            }
+            if(curr.getTreasure() != null){
+                toReturn.append(curr.getTreasure().getName()).append(" | ");
+            }
+            if(curr.isTheExit()){
+                toReturn.append("Exit");
+            }
+            toReturn.append("\n");
+            currNode = currNode.getNext();
+            curr = currNode.getE();
+        }
+        return toReturn.toString();
+    }
 
     private ChristianHolder<Room> dungeonRooms;
 

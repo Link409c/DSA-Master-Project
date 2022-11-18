@@ -16,6 +16,7 @@ public class DungeonLevelProgression {
         if(d.getCurrentFloor() < 99) {
             //print continueScript
             ScriptPrinter cont = new ScriptPrinter();
+            cont.printExitFoundScript();
             cont.printSectionScript(d.getCurrentFloor());
             cont.printContinueScript();
             /* create a new dungeon using player level and floor number

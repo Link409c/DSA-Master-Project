@@ -20,15 +20,20 @@ public class MainMenu{
         //new game, continue, or load
         int choice;
         try{
-            choice = (in.nextInt());
-            if(choice <= 0 || choice > 3 ){
-                throw new MenuInputException();
-            }
+            choice = in.nextInt();
+            tryInput(choice);
         }catch(MenuInputException invalidInput){
-            System.out.println("Choose New Game (1), Continue (2), or Load (3).");
-            choice = (in.nextInt());
+            choice = in.nextInt();
         }
         return choice;
     }
-    public MainMenu() {}
+
+    public void tryInput(int choice) throws MenuInputException {
+        if (choice < 1 || choice > 3) {
+            throw new MenuInputException();
+        }
+    }
+    public MainMenu() {
+
+    }
 }

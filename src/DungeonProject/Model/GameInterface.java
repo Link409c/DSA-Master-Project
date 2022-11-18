@@ -17,5 +17,5 @@ public interface GameInterface {
     void continueFromSave(File afile);
 
     //end the game when the player dies or quits
-    void endGame(Player p);
+    boolean endGame(Player p);
 }

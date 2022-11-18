@@ -1,9 +1,6 @@
 package DungeonProject.Control;
 
-import DungeonProject.Model.MenuInputException;
-import DungeonProject.Model.Monster;
-import DungeonProject.Model.Player;
-import DungeonProject.Model.Room;
+import DungeonProject.Model.*;
 import DungeonProject.View.MenuPrinter;
 
 import java.util.Scanner;
@@ -29,9 +26,7 @@ public class BattleMenu{
         int choice;
         try{
             choice = (in.nextInt());
-            if(choice <= 0 || choice > 4 ){
-                throw new MenuInputException();
-            }
+            tryInput(choice);
         }catch(MenuInputException invalidInput){
             System.out.println("Choose Attack (1), Defend (2), Items (3), or Run (4).");
             choice = (in.nextInt());
@@ -66,6 +61,11 @@ public class BattleMenu{
         r.setThePlayer(p);
         r.setEnemy(m);
         return r;
+    }
+    public void tryInput(int choice) throws MenuInputException {
+        if (choice < 1 || choice > 4) {
+            throw new MenuInputException();
+        }
     }
     
     public BattleMenu() {

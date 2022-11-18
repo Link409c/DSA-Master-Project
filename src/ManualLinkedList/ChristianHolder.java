@@ -110,17 +110,26 @@ public class ChristianHolder<E>
      * @param node the node to find the position of.
      * @return returns the index number.
      */
-    public int findAPosition(Node<E> node){
+    public int findAPosition(Node<E> node) {
         int thePos = 0;
         int listSize = getSize();
-        Node<E> temp = getHead();
-        for(int i = 0; i < listSize; i++){
-            if(!temp.equals(node)){
-                temp = temp.getNext();
-                thePos++;
+        if (listSize != 0) {
+            if(!node.equals(getHead())) {
+                Node<E> temp = getHead();
+                for (int i = 0; i < listSize; i++) {
+                    if (!temp.equals(node)) {
+                        temp = temp.getNext();
+                        thePos++;
+                    }
+                }
+            }else{
+                return thePos;
             }
+            return thePos;
+        }else{
+            System.out.println("Your list is empty.");
         }
-        return thePos;
+        return 0;
     }
 
     //method to find a Node that contains the value passed to the method
@@ -196,7 +205,12 @@ public class ChristianHolder<E>
         //if no head, put node at head
         if(getHead() == null){
             setHead(toAdd);
+            getHead().setNext(getTail());
+            getHead().setPrev(getTail());
             setTail(toAdd);
+            getTail().setNext(getHead());
+            getTail().setPrev(getHead());
+
         }
         else{
             Node<E> curr = getHead();

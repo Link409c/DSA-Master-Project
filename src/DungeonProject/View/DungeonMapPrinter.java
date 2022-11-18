@@ -2,6 +2,7 @@ package DungeonProject.View;
 
 import DungeonProject.Model.Dungeon;
 import DungeonProject.Model.Player;
+import DungeonProject.Model.StringDisplayFormatter;
 
 /**
  * The Dungeon Map Printer formats and prints the layout of the current floor of the dungeon for the player.
@@ -13,40 +14,48 @@ public class DungeonMapPrinter {
     public void mapInfoFormatter(Player p, Dungeon d){
         int gp = p.getGamesPlayed();
         int cf = d.getCurrentFloor();
-        String gamesP, currF;
+        StringBuilder gpS = new StringBuilder(), cfS = new StringBuilder();
         if(gp < 10 ){
-            gamesP = "0 " + gp;
+            gpS.append('0').append(' ').append(gp);
         }else{
-            gamesP = String.valueOf(gp);
+            char[] gpA = String.valueOf(gp).toCharArray();
+            for(int i = 0; i < gpA.length - 1; i++) {
+                gpS.append(gpA[i]).append(' ');
+            }
+            gpS.append(gpA[gpA.length-1]);
         }
-        if(cf < 10){
-            currF = "0 " + cf;
+        if(cf < 10 ){
+            cfS.append('0').append(' ').append(cf);
+        }else{
+            char[] cfA = String.valueOf(cf).toCharArray();
+            for(int i = 0; i < cfA.length - 1; i++) {
+                cfS.append(cfA[i]).append(' ');
+            }
+            cfS.append(cfA[cfA.length-1]);
         }
-        else{
-            currF = String.valueOf(cf);
-        }
-        setCurrentFloor(currF);
-        setGamesPlayed(gamesP);
+        setCurrentFloor(cfS.toString());
+        setGamesPlayed(gpS.toString());
     }
 
-    public void mapLayoutFormatter(Dungeon d){
+    public String mapLayoutFormatter(Dungeon d){
         //TODO format the map layout for use in the printFloorMap method
+        StringBuilder map = new StringBuilder();
         int rooms = d.getDungeonRooms().getSize();
-        //track the room number for accuracy, remove this once complete
-        System.out.println(rooms);
-        for(int i = 0; i < rooms; i++){
-            if(i == rooms-1){
-                if(i == d.getPlayerPosition()){
-                    System.out.print("[*]");
-                }
-                System.out.print("[ ]");
-            }else {
-                if(i == d.getPlayerPosition()){
-                    System.out.print("[*]=");
-                }
-                System.out.print("[ ]=");
+        for (int i = 0; i < rooms-1; i++) {
+            if (i == d.getPlayerPosition()) {
+                map.append("[*]=");
+            } else {
+                map.append("[ ]=");
             }
         }
+        if (rooms - 1 == d.getPlayerPosition()) {
+            map.append("[*]");
+        } else {
+            map.append("[ ]");
+        }
+        String theMap = map.toString();
+        StringDisplayFormatter sdf = new StringDisplayFormatter();
+        return sdf.centerString(62, theMap);
     }
 
     /**
@@ -54,18 +63,18 @@ public class DungeonMapPrinter {
      * showing player location, exit(if found), and items(if found).
      */
     //TODO format the map to print correctly
-    //67 char length
-    public void printFloorMap(){
+    //64 char length inside box
+    public void printFloorMap(Dungeon d){
+        String printMap = mapLayoutFormatter(d);
         System.out.println("\n{}================================================================{}");
-        System.out.println("{}====  D U N G E O N :: " + getGamesPlayed() +"       " +
-                "         F L O O R :: " + getCurrentFloor() + "  ===={}");
+        System.out.println("{}===   D U N G E O N :: " + getGamesPlayed() +"       " +
+                "         F L O O R :: " + getCurrentFloor() + "   ==={}");
         System.out.println("{}================================================================{}");
         System.out.println("{}                                                                {}");
-        System.out.println("{}              print the map in here. get it as centered         {}");
-        System.out.println("{}             as possible using loops to determine size vs       {}");
-        System.out.println("{}                     space inside the square.                   {}");
+        System.out.println("{} "+printMap+" {}");
         System.out.println("{}                                                                {}");
         System.out.println("{}================================================================{}");
+
     }
     private String currentFloor;
 

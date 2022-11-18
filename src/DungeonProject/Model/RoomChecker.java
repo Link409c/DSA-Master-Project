@@ -11,6 +11,7 @@ import ManualLinkedList.ChristianHolder;
 public class RoomChecker {
 
     public Room checkRoom(Room r){
+
         //if room has enemy,
         if(r.getEnemy() != null) {
             //make a new battle object
@@ -30,12 +31,11 @@ public class RoomChecker {
         if(r.getTreasure() != null) {
             //add it to the player inventory
             r.getThePlayer().getInventory().getItems().add(r.getTreasure());
+            System.out.println("You found a " + r.getTreasure().getName() + "!");
             r.setTreasure(null);
         }
         return r;
     }
-
-
 
     public RoomChecker(){
 

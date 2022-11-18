@@ -29,7 +29,7 @@ public class DungeonBuilder {
         }
         //beyond that, increase the rooms size 1 each floor
         else {
-            maxRooms = 10 + aFloor;
+            maxRooms = Math.min(10 + aFloor, 50);
         }
         //create random object to use for room number generation
         Random r = new Random();
@@ -61,27 +61,29 @@ public class DungeonBuilder {
         //create variable for max items
         int maxItems;
         //to avoid an overabundance of items, limit the amount
-        //third of size multiplied by floor number
-        maxItems = (dungeonSize / 3) * (aFloor / 2);
+        //third of size plus ten percent of current floor
+        maxItems = (dungeonSize / 3) + Math.floorDiv(d.getCurrentFloor(), 10);
         //generate random items, limited by amount
         //key items should be placed intentionally so are not included in random generation
         String[] itemNames = {"Potion", "Hi-Potion", "Max Potion", "Wooden Sword", "Sword", "Dagger",
                 "Greatsword", "Woolen Shirt", "Leather Tunic", "Mail Hauberk", "Plate Mail", "Ring of Might",
                 "Ring of Defense", "Ring of Speed", "Vital Pendant"};
-        ItemType[] itemTypes = {ItemType.USABLE, ItemType.EQUIPMENT};
+        ItemType[] itemTypes = {ItemType.USABLE, ItemType.USABLE, ItemType.EQUIPMENT};
         Random r = new Random();
         int typesIndex, namesIndex;
         for (int i = 0; i < maxItems; i++) {
             Item item;
-            typesIndex = r.nextInt(0, 2);
+            typesIndex = r.nextInt(0, 3);
             //generate item based on type
-            if(typesIndex == 0){
+            if(typesIndex < 2){
                 namesIndex = r.nextInt(0, 3);
+                item = new Item(itemTypes[typesIndex], itemNames[namesIndex], d.getCurrentFloor());
             }
             else {
-                namesIndex = r.nextInt(4, 16);
+                namesIndex = r.nextInt(4, 14);
+                item = new Item(itemTypes[typesIndex], itemNames[namesIndex], d.getCurrentFloor());
+                item = new Equipment(item.getName(), d.getCurrentFloor());
             }
-            item = new Item(itemTypes[typesIndex], itemNames[namesIndex], d.getCurrentFloor());
             anItems.add(item);
         }
         setTreasures(anItems);
@@ -110,8 +112,8 @@ public class DungeonBuilder {
         }
         //to avoid an overabundance of monsters, limit the amount
         //we want to give the player a chance (until we don't)
-        //half of size multiplied by floor number
-        maxMonsters = (dungeonSize / 2) * aFloor;
+        //half of size plus 1/4 floor number
+        maxMonsters = (dungeonSize / 2) * Math.floorDiv(aFloor, 10);
         //limit monster types by section (scarier monsters deeper in the dungeon)
         //with floor limit of 99, about a third of the way sounds good for all the monster types
         Random r = new Random();
