@@ -109,9 +109,10 @@ public class StackCopy {
 
 		Stack<String> stackStrings = new Stack()<>;
 		
-		String fitnessGramPacerTest = "The FitnessGram™ Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues.";
+		String fitnessGramPacerTest = "The FitnessGram™ Pacer Test is a multistage aerobic capacity "
+				+ "test that progressively gets more difficult as it continues.";
 		
-		String[] stringArray = fitnessGramPacertest.split(" ");
+		String[] stringArray = fitnessGramPacerTest.split(" ");
 		
 		for(String s : stringArray) {
 			stackStrings.push(s);
