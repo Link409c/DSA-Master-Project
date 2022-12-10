@@ -1,0 +1,54 @@
+I attempted to build upon my algorithm that I worked through on the final exam for the actual implementation
+of Insertion Sort. However, I was unable to make it work using Queues. I understand the concept behind this
+implementation of the algorithm and I even compared my work to some popular implementations found on Geeks for Geeks,
+StackOverflow, etc. However, running my program using Queues for insertion sort places the largest element in the
+front, and then, replaces all of the following elements with the lowest element. I have run the debugger several times
+trying to pinpoint where this error occurs but I have not had any luck yet finding the error in my code causing
+this issue.
+
+I ended up using loops instead of another data structure to hold my array elements, which works.
+
+    //new code 12/9/22 using queues
+
+        /*Queue<E> unsortedQueue = new LinkedList<>();
+        Queue<E> sortedQueue = new LinkedList<>();
+        if(array != null) {
+            //insert the elements of the array into the unsorted queue
+            for (E e : array) {
+                unsortedQueue.add(e);
+            }
+            //while the unsorted queue is empty,
+            while (!unsortedQueue.isEmpty()) {
+                //get the element to insert
+                E toInsert = unsortedQueue.poll();
+                //flag for successful insertion
+                boolean wasInserted = false;
+                //for each element in the sorted queue,
+                for (int i = 0; i < sortedQueue.size(); i++) {
+                    //get the next element in the queue
+                    E curr = sortedQueue.poll();
+                    //compare that element to the element from the unsorted queue
+                    //if the element to insert is smaller,
+                    if (toInsert.compareTo(curr) < 0) {
+                        //add that element to the sorted Queue
+                        sortedQueue.add(toInsert);
+                        //add the removed element from the sorted Queue
+                        sortedQueue.add(curr);
+                        wasInserted = true;
+                    }
+                    //otherwise add the element removed from the sorted queue to the end
+                    else {
+                        sortedQueue.add(curr);
+                    }
+                }
+                //if an element is not inserted in the sorted loop, place it at the end of the queue
+                if (!wasInserted) {
+                    unsortedQueue.add(toInsert);
+                }
+            }
+            //repopulate the array with the contents of the sorted queue
+            for (int i = 0; i < array.length; i++) {
+                array[i] = sortedQueue.poll();
+            }
+        }*/
+        //set the list as the sorted array
