@@ -1,7 +1,5 @@
 package DungeonProject.Model;
 
-import java.io.File;
-
 public interface GameInterface {
 
     //run the game
@@ -12,9 +10,6 @@ public interface GameInterface {
 
     //create a new dungeon when the player continues after dying
     void continueGame();
-
-    //continue a game from a save file
-    void continueFromSave(File afile);
 
     //end the game when the player dies or quits
     boolean endGame(Player p);

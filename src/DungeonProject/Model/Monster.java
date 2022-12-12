@@ -1,5 +1,8 @@
 package DungeonProject.Model;
 
+/**
+ * A Monster is a Being that the Player fights inside the dungeon. Has many different Types.
+ */
 public class Monster extends Being {
 
     /**

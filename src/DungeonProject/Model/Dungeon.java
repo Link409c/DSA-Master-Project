@@ -26,7 +26,7 @@ public class Dungeon {
         Room curr = currNode.getE();
         toReturn.append("Current Floor: ").append(getCurrentFloor()).append("\n");
         toReturn.append("Size: ").append(size).append("\n");
-        toReturn.append("Player Position: ").append(getPlayerPosition()).append("\n");
+        toReturn.append("Player Position: ").append(getPlayerPosition()+1).append("\n");
         for(int i = 0; i < size; i++){
             toReturn.append("Room ").append(i+1).append(": ");
             if(curr.getThePlayer() != null){
@@ -54,14 +54,18 @@ public class Dungeon {
 
     private int playerPosition;
 
+    private boolean endGame;
+
     //used for new game
     public Dungeon(){
         setCurrentFloor(1);
+        setEndGame(false);
     }
 
     //used for new floors
     public Dungeon(Dungeon d){
         setCurrentFloor(d.getCurrentFloor());
+        setEndGame(false);
         setDungeonRooms(null);
         setPlayerPosition(0);
     }
@@ -88,5 +92,13 @@ public class Dungeon {
 
     public void setPlayerPosition(int playerPosition) {
         this.playerPosition = playerPosition;
+    }
+
+    public boolean isEndGame() {
+        return endGame;
+    }
+
+    public void setEndGame(boolean endGame) {
+        this.endGame = endGame;
     }
 }

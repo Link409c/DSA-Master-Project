@@ -5,11 +5,14 @@ import DungeonProject.View.MenuPrinter;
 
 import java.util.Scanner;
 
+/**
+ * Main Menu allows the user to control options when starting the game.
+ */
 public class MainMenu{
 
     /**
-     * accessMenu method controls the game outside of dungeon gameplay. the user can start a new game,
-     * continue a game, or load from a save file.
+     * accessMenu method controls the game outside of dungeon gameplay.
+     * User can start a new game or continue a game.
      */
    
     public int accessMenu() {
@@ -17,7 +20,7 @@ public class MainMenu{
         MenuPrinter m = new MenuPrinter();
         m.printMainMenu();
         Scanner in = new Scanner(System.in);
-        //new game, continue, or load
+        //new game or continue
         int choice;
         try{
             choice = in.nextInt();
@@ -29,7 +32,7 @@ public class MainMenu{
     }
 
     public void tryInput(int choice) throws MenuInputException {
-        if (choice < 1 || choice > 3) {
+        if (choice < 1 || choice > 2) {
             throw new MenuInputException();
         }
     }

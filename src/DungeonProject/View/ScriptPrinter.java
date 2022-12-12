@@ -60,16 +60,6 @@ public class ScriptPrinter{
     }
 
     /**
-     * loadGameScript prints a short script confirming the selection and welcoming the player
-     * back to the game.
-     * @param p the Player object to load into the game.
-     */
-    public void printLoadGameScript(Player p){
-        System.out.println("\nResuming your saved game.");
-        System.out.println("Welcome back, " + p.getName() + ".");
-    }
-
-    /**
      * sectionScript method holds a script enticing the player to keep playing. it
      * prints the script based on the floor the player has reached when they move past
      * that section of the dungeon.
@@ -87,16 +77,21 @@ public class ScriptPrinter{
         }
         else if(currentFloor == 50){
             System.out.println("\nYour skills have brought you far, your strength led you " +
-                    "to victory against many enemies, and your sense of adventure uncovered "
-                    + "much. However, still more awaits.");
+                    "\nto victory against many enemies, and your sense of adventure uncovered "
+                    + "\nmuch. However, still more awaits.");
         }
         else if(currentFloor == 70){
             System.out.println("\nThere is little more to say of your success! A great adventurer " +
-                    "such as you has what it takes to reach what lies at the very core of these "
-                    + "catacombs. Soon, it will be within your reach...");
+                    "\nsuch as you has what it takes to reach what lies at the very core of these "
+                    + "\ncatacombs. Soon, it will be within your reach...");
         }
         else if(currentFloor == 90){
             System.out.println("\nYou're nearly there! The nadir of this labyrinth is just below you.");
+        }
+        else if(currentFloor == 100){
+            System.out.println("\nYou continue ever downward, past what was once the deepest part" +
+                    "\nof an ever-growing labyrinth. Good Luck, Hero. From here, none will aid you, but" +
+                    "\nyour feats will be heard of in places far and wide.");
         }
     }
 
@@ -137,11 +132,14 @@ public class ScriptPrinter{
      * final floor of the dungeon.
      */
     public void printVictoryScript() {
-        //TODO Write this
+        System.out.println("Congratulations! Against great odds, you have conquered all 99 Floors of \n");
+        System.out.println("Christian's Dungeon Crawler. You even defeated yourself at the end!\n");
+        System.out.println("The Game will continue for as long as you wish after this point.");
+        System.out.println("Thank you for playing!!!");
     }
     
     public void printEndGameScript(Player p, int currentFloor){
-        if(p.isDead()){
+        if(!p.isAlive()){
             System.out.println("\nYou've braved the dungeon " + p.getGamesPlayed() + " times.");
             System.out.println("You reached floor " + currentFloor + ".");
             System.out.println("Enemies Killed: " + p.getKillCount());

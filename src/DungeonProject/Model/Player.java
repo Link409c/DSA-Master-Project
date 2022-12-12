@@ -36,7 +36,7 @@ public class Player extends Being implements PlayerInterface {
      */
     @Override
     public void levelUp(int experience) {
-        System.out.println("Level up! (" + getLevel() + " --> " + getLevel() + 1 + ")");
+        System.out.println("Level up! (" + getLevel() + " --> " + (getLevel() + 1) + ")");
         setExperience(experience - getLevelUpThreshold());
         setLevel(getLevel() + 1);
         setMaxHealthPoints(getLevel() * 100);
@@ -106,6 +106,7 @@ public class Player extends Being implements PlayerInterface {
                     e[theIndex] = (Equipment) theItem;
                     setEquipment(e);
                     System.out.println("Equipped " + theItem.getName() + ".");
+                    getInventory().getItems().removeValue(theItem);
                 } else {
                     System.out.println("You cannot equip this item.");
                 }
@@ -135,13 +136,6 @@ public class Player extends Being implements PlayerInterface {
         }else{
             System.out.println("Your inventory is empty.");
         }
-    }
-
-    /**
-     * run away method
-     */
-    public void runAway(){
-
     }
 
     //getter methods for player stats check equipment for any stat boosts.
@@ -239,7 +233,7 @@ public class Player extends Being implements PlayerInterface {
         setKillCount(0);
         setFloorsCleared(0);
         setItemsAcquired(0);
-        setGamesPlayed(0);
+        setGamesPlayed(1);
     }
 
     public Player(String name, int healthPoints, int attackPoints, int defensePoints,
@@ -257,6 +251,7 @@ public class Player extends Being implements PlayerInterface {
     public int getSTAT_CAP(){
         return STAT_CAP;
     }
+
     public void setExperience(int experience) {
         this.experience = experience;
     }

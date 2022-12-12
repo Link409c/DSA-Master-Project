@@ -2,7 +2,6 @@ package FinalProject.ExecutivesQueue;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Scanner;
 
 /**
  * CompanySim simulates hiring and shifting of executives in different Departments of a Company.
@@ -12,11 +11,20 @@ public class CompanySim {
      * creates a new Department and adds it to the array.
      */
     public void addDepartment(String deptName){
-        Department department = new Department(deptName);
+        //get departments array size
         int size = getDepartments().length;
+        //pass array into temp
         Department[] temp = getDepartments();
-        temp[size] = department;
-        setDepartments(temp);
+        //make a larger array to hold the new department
+        Department[] increaseDepartments = new Department[size + 1];
+        //copy the contents of the old array into the new one
+        for(int i = 0; i < size; i++){
+            increaseDepartments[i] = temp[i];
+        }
+        //insert the new department at the end of the new array
+        increaseDepartments[increaseDepartments.length - 1] = new Department(deptName);
+        //set the new array as the global variable
+        setDepartments(increaseDepartments);
     }
 
     /**
@@ -100,27 +108,30 @@ public class CompanySim {
      * displays a table of each department's salaries listed in descending order.
      */
     public void payroll(){
+        System.out.printf("%-20s %5s %2s %5s %5s\n", "Department", "|", "Executive", "|", "Salary");
         for(Department d : getDepartments()){
-            System.out.printf("%s", d.getDepartmentName());
+            //print department name in first column, first executive in 2nd, salary in 3rd
+            System.out.printf("%-20s %5s", d.getDepartmentName(), "|");
             for(Executive e : d.getDeptExecutives()) {
-                //print department name in first column, first executive in 2nd, salary in 3rd
-                //following lines
                 //print each executive and salary in line with above exec and salary
+                System.out.printf("%-2s %5s %s %5s\n", e.getName(), "|", "$", e.getSalary());
             }
         }
     }
 
     public CompanySim(){
-        Department[] departments = new Department[1];
-        departments[0].setDepartmentName("Unemployed");
-        setDepartments(departments);
+        setDepartments(new Department[1]);
+        Department[] d = getDepartments();
+        d[0] = new Department("Unemployed");
+        setDepartments(d);
     }
 
     public CompanySim(String departmentName){
-        Department[] departments = new Department[2];
-        departments[0].setDepartmentName("Unemployed");
-        departments[1].setDepartmentName(departmentName);
-        setDepartments(departments);
+        setDepartments(new Department[1]);
+        Department[] d = getDepartments();
+        d[0] = new Department("Unemployed");
+        setDepartments(d);
+        addDepartment(departmentName);
     }
 
     public Department[] getDepartments() {

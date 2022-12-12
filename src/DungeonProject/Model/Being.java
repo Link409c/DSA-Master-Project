@@ -2,6 +2,9 @@ package DungeonProject.Model;
 
 import java.util.Random;
 
+/**
+ * A Being object is a player or monster in the dungeon.
+ */
 public class Being implements BeingInterface {
 
     /**
@@ -16,7 +19,7 @@ public class Being implements BeingInterface {
         //check if target exists
         if(b != null){
             //check if target is dead
-            if(!b.isDead()){
+            if(b.isAlive()){
                 //check if object is player or monster
                 //prints a different message to show action
                 //calculate damage and reduce target hp accordingly
@@ -24,23 +27,23 @@ public class Being implements BeingInterface {
                 int crit = r.nextInt(0, 21);
                 //critical hit chance
                 if(crit == 20){
-                    if (getClass().equals(Player.class)) {
+                    if (this instanceof Player) {
                         System.out.println("You attack " + b.getName() + ".");
-                        inflicted = (int) (getAttackPoints()*1.5 - b.getDefensePoints());
+                        inflicted = Math.max((int) (getAttackPoints()*1.5 - b.getDefensePoints()), 0);
                         System.out.println("Critical hit! You deal " + inflicted + " damage.");
-                    } else if (getClass().equals(Monster.class)) {
-                        System.out.println(b.getName() + "attacks! Critical hit!");
-                        inflicted = (int) (b.getAttackPoints()*1.5 - getDefensePoints());
+                    } else if (this instanceof Monster) {
+                        System.out.println(getName() + " attacks! Critical hit!");
+                        inflicted = Math.max((int) (getAttackPoints()*1.5 - b.getDefensePoints()), 0);
                         System.out.println("You take " + inflicted + " damage.");
                     }
                 }else {
-                    if (getClass().equals(Player.class)) {
+                    if (this instanceof Player) {
                         System.out.println("You attack " + b.getName() + ".");
-                        inflicted = (getAttackPoints() - b.getDefensePoints());
+                        inflicted = Math.max((getAttackPoints() - b.getDefensePoints()), 0);
                         System.out.println("You deal " + inflicted + " damage.");
-                    } else if (getClass().equals(Monster.class)) {
-                        System.out.println(b.getName() + "attacks!");
-                        inflicted = (b.getAttackPoints() - getDefensePoints());
+                    } else if (this instanceof Monster) {
+                        System.out.println(getName() + " attacks!");
+                        inflicted = Math.max((getAttackPoints() - b.getDefensePoints()), 0);
                         System.out.println("You take " + inflicted + " damage.");
                     }
                 }
@@ -63,7 +66,7 @@ public class Being implements BeingInterface {
         //calculate new defense, HP regeneration and assign values accordingly
         if(getClass().equals(Player.class)) {
             System.out.println("Defending.");
-            heal = (int) (getCurrHealthPoints() * .02);
+            heal = (int) (getCurrHealthPoints() * .05);
             setCurrHealthPoints(getCurrHealthPoints() + heal);
             System.out.println("You gain " + heal + "HP.");
             newDefense = getDefensePoints() * 2;
@@ -83,9 +86,9 @@ public class Being implements BeingInterface {
      * @return Returns true if being HP is zero. False if not.
      */
     @Override
-    public boolean isDead() {
-        //check current HP vs Max HP of the being and return result
-        return ((getMaxHealthPoints() - getCurrHealthPoints()) > 0);
+    public boolean isAlive() {
+        //check current HP of the being and return result
+        return getCurrHealthPoints() > 0;
     }
 
     private String name;

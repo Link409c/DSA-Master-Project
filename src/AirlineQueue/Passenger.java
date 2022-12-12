@@ -1,8 +1,10 @@
+package AirlineQueue;
 
+import java.util.Random;
+
+/** A class to represent a passenger. */
 public class Passenger {
 
-	/** A class to represent a passenger. */
-	public class Passenger {
 	// Data Fields
 	/** The ID number for this passenger. */
 	private int passengerId;
@@ -18,8 +20,10 @@ public class Passenger {
 	@param arrivalTime The time this passenger arrives */
 	public Passenger(int arrivalTime) {
 	this.arrivalTime = arrivalTime;
-	processingTime = 1 + Random.nextInt(maxProcessingTime);
-	passengerId = idNum++;
+	Random randomTime = new Random();
+	setProcessingTime(1 + randomTime.nextInt(getMaxProcessingTime()));
+	setIdNum(getIdNum() + 1);
+	this.passengerId = getIdNum();
 	}
 	/** Get the arrival time.
 	@return The arrival time */
@@ -37,8 +41,36 @@ public class Passenger {
 	return passengerId;
 	}
 	/** Set the maximum processing time
-	@param maxProcessingTime The new value */
+	@param maxProcessTime The new value */
 	public static void setMaxProcessingTime(int maxProcessTime) {
 	maxProcessingTime = maxProcessTime;
+	}
+
+	public int getPassengerId() {
+		return passengerId;
+	}
+
+	public void setPassengerId(int passengerId) {
+		this.passengerId = passengerId;
+	}
+
+	public void setProcessingTime(int processingTime) {
+		this.processingTime = processingTime;
+	}
+
+	public void setArrivalTime(int arrivalTime) {
+		this.arrivalTime = arrivalTime;
+	}
+
+	public int getMaxProcessingTime() {
+		return maxProcessingTime;
+	}
+
+	public int getIdNum() {
+		return idNum;
+	}
+
+	public void setIdNum(int idNum) {
+		Passenger.idNum = idNum;
 	}
 }

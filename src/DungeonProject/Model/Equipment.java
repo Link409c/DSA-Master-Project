@@ -20,7 +20,8 @@ public class Equipment extends Item{
         //armor
         else if(name.equalsIgnoreCase("Woolen Shirt") ||
                 name.equalsIgnoreCase("Leather Tunic") ||
-                name.equalsIgnoreCase("Mail Hauberk")){
+                name.equalsIgnoreCase("Mail Hauberk") ||
+                name.equalsIgnoreCase("Plate Mail")){
             setEquipmentClass(EquipmentClass.ARMOR);
         }
         //accessories
@@ -38,7 +39,14 @@ public class Equipment extends Item{
         categorizeEClassByName(name);
         //roman numeral denotes equipment power / quality
         IntegerToRoman itr = new IntegerToRoman();
-        setName(getName() + " " + itr.intToRoman(Math.floorDiv(currentFloor, 10)));
+        String rank;
+        if(currentFloor < 11){
+            rank = "0";
+        }
+        else {
+            rank = itr.intToRoman(Math.floorDiv(currentFloor, 10));
+        }
+        setName(getName() + " " + rank);
     }
 
     public void setEquipmentClass(EquipmentClass equipmentClass) {

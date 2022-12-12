@@ -6,6 +6,10 @@ import java.util.Random;
 
 import static DungeonProject.Model.MonsterType.*;
 
+/**
+ * Dungeon Builder is a class that generates linked lists of rooms, monsters, and items to
+ * instantiate a dungeon object.
+ */
 public class DungeonBuilder {
 
     /**
@@ -47,12 +51,11 @@ public class DungeonBuilder {
 
     /**
      * generateItems method creates the item objects that can be found by the player
-     * in the dungeon. the method will ensure that at least one of each type of item
-     * is created (Usable items, Equipment (Weapon, Armor, Accessory), with the limit
-     * being determined by the floor and dungeon size only. Key items will be added in
-     * a later version.
+     * in the dungeon, either as rewards from battle or on the ground. Key items will
+     * be added in a later version for narrative purposes.
      */
     public void generateItems(Dungeon d) {
+        ChristianHolder<Monster> theMonsters = getMonsters();
         ChristianHolder<Item> anItems = new ChristianHolder<>();
         //get current floor of the dungeon
         int aFloor = d.getCurrentFloor();
@@ -61,8 +64,7 @@ public class DungeonBuilder {
         //create variable for max items
         int maxItems;
         //to avoid an overabundance of items, limit the amount
-        //third of size plus ten percent of current floor
-        maxItems = (dungeonSize / 3) + Math.floorDiv(d.getCurrentFloor(), 10);
+        maxItems = (dungeonSize / 2);
         //generate random items, limited by amount
         //key items should be placed intentionally so are not included in random generation
         String[] itemNames = {"Potion", "Hi-Potion", "Max Potion", "Wooden Sword", "Sword", "Dagger",
@@ -70,22 +72,34 @@ public class DungeonBuilder {
                 "Ring of Defense", "Ring of Speed", "Vital Pendant"};
         ItemType[] itemTypes = {ItemType.USABLE, ItemType.USABLE, ItemType.EQUIPMENT};
         Random r = new Random();
-        int typesIndex, namesIndex;
+        int typesIndex, namesIndex, rewardChance, rewardIndex;
         for (int i = 0; i < maxItems; i++) {
             Item item;
             typesIndex = r.nextInt(0, 3);
             //generate item based on type
             if(typesIndex < 2){
                 namesIndex = r.nextInt(0, 3);
-                item = new Item(itemTypes[typesIndex], itemNames[namesIndex], d.getCurrentFloor());
+                item = new Item(itemTypes[typesIndex], itemNames[namesIndex], aFloor);
             }
             else {
                 namesIndex = r.nextInt(4, 14);
-                item = new Item(itemTypes[typesIndex], itemNames[namesIndex], d.getCurrentFloor());
-                item = new Equipment(item.getName(), d.getCurrentFloor());
+                item = new Item(itemTypes[typesIndex], itemNames[namesIndex], aFloor);
+                item = new Equipment(item.getName(), aFloor);
             }
-            anItems.add(item);
+            rewardChance = r.nextInt(2);
+            if(rewardChance == 1){
+                rewardIndex = i;
+                if(theMonsters.getSize() < rewardIndex){
+                    if (!theMonsters.findNodeAtPosition(i).getE().hasReward()){
+                        theMonsters.findNodeAtPosition(i).getE().setReward(item);
+                    }
+                }
+            }
+            else {
+                anItems.add(item);
+            }
         }
+        setMonsters(theMonsters);
         setTreasures(anItems);
     }
 
@@ -112,8 +126,7 @@ public class DungeonBuilder {
         }
         //to avoid an overabundance of monsters, limit the amount
         //we want to give the player a chance (until we don't)
-        //half of size plus 1/4 floor number
-        maxMonsters = (dungeonSize / 2) * Math.floorDiv(aFloor, 10);
+        maxMonsters = (dungeonSize / 2) + aFloor/3;
         //limit monster types by section (scarier monsters deeper in the dungeon)
         //with floor limit of 99, about a third of the way sounds good for all the monster types
         Random r = new Random();

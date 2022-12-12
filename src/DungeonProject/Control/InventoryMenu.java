@@ -6,6 +6,10 @@ import DungeonProject.View.MenuPrinter;
 import ManualLinkedList.ChristianHolder;
 import java.util.Scanner;
 
+
+/**
+ * Inventory Menu allows the user to control player options when accessing the inventory object.
+ */
 public class InventoryMenu {
 
     /**

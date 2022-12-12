@@ -19,7 +19,7 @@ public class SortingTester {
         Random r = new Random();
         Integer[] theArray = new Integer[r.nextInt(1000)];
         for(int i = 0; i < theArray.length; i++){
-            int data = r.nextInt(50);
+            int data = r.nextInt(200);
             theArray[i] = data;
         }
         return theArray;
@@ -72,7 +72,16 @@ public class SortingTester {
 
         setArray(randomizeArray());
 
+        MergeSort<Integer> mergeSorter = new MergeSort<>(getArray());
+        System.out.println("\nMerge Sort " + getArray().length + " elements: ");
 
+        System.out.println("Unsorted List: ");
+        mergeSorter.printList();
+
+        mergeSorter.sortArray(mergeSorter.getList());
+
+        System.out.println("\nSorted List: ");
+        mergeSorter.printList();
 
 
     }

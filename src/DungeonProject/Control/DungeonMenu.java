@@ -24,7 +24,7 @@ public class DungeonMenu{
         //variable for input
         int choice;
         boolean loopEnd = false;
-        do {
+        while (!loopEnd){
             dm.printDungeonMenu();
             try {
                 choice = in.nextInt();
@@ -73,18 +73,11 @@ public class DungeonMenu{
                 }
                 //or quit
                 case 6 -> {
-                    WindowPrinter winP = new WindowPrinter();
-                    winP.printQuitWindow();
-                    EndGameMenu endM = new EndGameMenu();
-                    boolean toContinue = endM.accessMenu();
-                    if(!toContinue){
-                        System.exit(0);
-                    }else{
-                        //TODO figure out how to quit from dungeon menu
-                    }
+                    d.setEndGame(true);
+                    loopEnd = true;
                 }
             }
-        } while (!loopEnd);
+        }
         return d;
     }
 

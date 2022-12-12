@@ -18,13 +18,24 @@ public class PlayerMovement {
     public ChristianHolder<Room> movePlayer(Dungeon d, Player p, char direction){
         ChristianHolder<Room> rooms = d.getDungeonRooms();
         if(direction == 'l') {
-            rooms.findNodeAtPosition(d.getPlayerPosition()).getPrev().getE().setThePlayer(p);
-            rooms.findNodeAtPosition(d.getPlayerPosition()).getE().setThePlayer(null);
+            if(rooms.findNodeAtPosition(d.getPlayerPosition()).equals(rooms.getHead())){
+                rooms.findNodeAtPosition(d.getPlayerPosition()).getE().setThePlayer(null);
+                rooms.getTail().getE().setThePlayer(p);
+                rooms.getHead().getE().setThePlayer(null);
+            }else {
+                rooms.findNodeAtPosition(d.getPlayerPosition()).getPrev().getE().setThePlayer(p);
+                rooms.findNodeAtPosition(d.getPlayerPosition()).getE().setThePlayer(null);
+            }
         }
         else if(direction == 'r'){
-            rooms.findNodeAtPosition(d.getPlayerPosition()).getNext().getE().setThePlayer(p);
-
-            rooms.findNodeAtPosition(d.getPlayerPosition()).getE().setThePlayer(null);
+            if(rooms.findNodeAtPosition(d.getPlayerPosition()).equals(rooms.getTail())){
+                rooms.findNodeAtPosition(d.getPlayerPosition()).getE().setThePlayer(null);
+                rooms.getHead().getE().setThePlayer(p);
+                rooms.getTail().getE().setThePlayer(null);
+            }else {
+                rooms.findNodeAtPosition(d.getPlayerPosition()).getNext().getE().setThePlayer(p);
+                rooms.findNodeAtPosition(d.getPlayerPosition()).getE().setThePlayer(null);
+            }
         }
         return rooms;
     }

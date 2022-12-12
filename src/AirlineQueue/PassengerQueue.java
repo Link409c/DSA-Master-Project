@@ -1,67 +1,139 @@
+package AirlineQueue;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
+/** Class to simulate a queue of passengers. */
 public class PassengerQueue {
-	/** Class to simulate a queue of passengers. */
-	public class PassengerQueue {
+
 	// Data Fields
-	/** The queue of passengers. */
+	/**
+	 * The queue of passengers.
+	 */
 	private Queue<Passenger> theQueue;
-	/** The number of passengers served. */
+	/**
+	 * The number of passengers served.
+	 */
 	private int numServed;
-	/** The total time passengers were waiting. */
+	/**
+	 * The total time passengers were waiting.
+	 */
 	private int totalWait;
-	/** The name of this queue. */
+	/**
+	 * The name of this queue.
+	 */
 	private String queueName;
-	/** The average arrival rate. */
+	/**
+	 * The average arrival rate.
+	 */
 	private double arrivalRate;
 	// Constructor
-	/** Construct a PassengerQueue with the given name.
-	@param queueName The name of this queue
-	*/
+
+	/**
+	 * Construct a PassengerQueue with the given name.
+	 *
+	 * @param queueName The name of this queue
+	 */
 	public PassengerQueue(String queueName) {
-	numServed = 0;
-	totalWait = 0;
-	this.queueName = queueName;
-	theQueue = new LinkedList<Passenger>();
+		setNumServed(0);
+		setTotalWait(0);
+		this.queueName = queueName;
+		setTheQueue(new LinkedList<>());
 	}
-	/** Check if a new arrival has occurred.
-	@param clock The current simulated time
-	@param showAll Flag to indicate that detailed
-	data should be output
 
-	*/
+	public Queue<Passenger> getTheQueue() {
+		return theQueue;
+	}
+
+	public void setTheQueue(Queue<Passenger> theQueue) {
+		this.theQueue = theQueue;
+	}
+
+	public int getNumServed() {
+		return numServed;
+	}
+
+	public void setNumServed(int numServed) {
+		this.numServed = numServed;
+	}
+
+	public int getTotalWait() {
+		return totalWait;
+	}
+
+	public void setTotalWait(int totalWait) {
+		this.totalWait = totalWait;
+	}
+
+	public String getQueueName() {
+		return queueName;
+	}
+
+	public void setQueueName(String queueName) {
+		this.queueName = queueName;
+	}
+
+	public double getArrivalRate() {
+		return arrivalRate;
+	}
+
+	public void setArrivalRate(double arrivalRate) {
+		this.arrivalRate = arrivalRate;
+	}
+
+
+	public boolean isEmpty(){
+		return getTheQueue().isEmpty();
+	}
+
+	public int size(){
+		return getTheQueue().size();
+	}
+
+	/**
+	 * Check if a new arrival has occurred.
+	 *
+	 * @param clock   The current simulated time
+	 * @param showAll Flag to indicate that detailed
+	 *                data should be output
+	 */
 	public void checkNewArrival(int clock, boolean showAll) {
-	if (Math.random() < arrivalRate) {
-	theQueue.add(new Passenger(clock));
-	if (showAll) {
-	System.out.println("Time is "
-	+ clock + ": "
-	+ queueName
-	+ " arrival, new queue size is "
-	+ theQueue.size());
+		if (Math.random() < getArrivalRate()) {
+			getTheQueue().add(new Passenger(clock));
+			if (showAll) {
+				System.out.println("Time is "
+						+ clock + ": "
+						+ getQueueName()
+						+ " arrival, new queue size is "
+						+ getTheQueue().size());
 
+			}
+		}
 	}
-	}
-	}
-	/** Update statistics.
-	pre: The queue is not empty.
-	@param clock The current simulated time
-	@param showAll Flag to indicate whether to show detail
-	@return Time passenger is done being served
-	*/
+
+	/**
+	 * Update statistics.
+	 * pre: The queue is not empty.
+	 *
+	 * @param clock   The current simulated time
+	 * @param showAll Flag to indicate whether to show detail
+	 * @return Time passenger is done being served
+	 */
 	public int update(int clock, boolean showAll) {
-	Passenger nextPassenger = theQueue.remove();
-	int timeStamp = nextPassenger.getArrivalTime();
-	int wait = clock - timeStamp;
-	totalWait += wait;
-	numServed++;
-	if (showAll) {
-	System.out.println("Time is " + clock
-	+ ": Serving "
-	+ queueName
-	+ " with time stamp "
-	+ timeStamp);
+		Passenger nextPassenger = getTheQueue().remove();
+		int timeStamp = nextPassenger.getArrivalTime();
+		int wait = clock - timeStamp;
+		setTotalWait(getTotalWait() + wait);
+		setNumServed(getNumServed() + 1);;
+		if (showAll) {
+			System.out.println("Time is " + clock
+					+ ": Serving "
+					+ getQueueName()
+					+ " with time stamp "
+					+ timeStamp);
 
-	}
-	return clock + nextPassenger.getProcessingTime();
+		}
+		return clock + nextPassenger.getProcessingTime();
 	}
 }
+

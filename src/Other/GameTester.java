@@ -1,4 +1,4 @@
-package DungeonProject.Testing;
+package Other;
 
 import DungeonProject.Control.DungeonMenu;
 import DungeonProject.Model.*;
@@ -14,7 +14,7 @@ public class GameTester {
         //testing gameplay
 
         Game game = new Game();
-        game.play();
+        //game.play();
 
         //testing movement
 
@@ -101,19 +101,31 @@ public class GameTester {
         Monster m = new Monster(MonsterType.Dragon, 1, c.getLevel());
         WindowPrinter w = new WindowPrinter();
         w.printBattleWindow(c, m);
+
         //testing a name longer than character limit
+
         c.setName("Joroff Joroffsen");
+
         //test critical health indicator
+
         c.setCurrHealthPoints(20);
+
         //test reflection case
+
         Monster r = new Monster(MonsterType.Reflection, c);
         w.printBattleWindow(c, r);
+
         //test name abbreviation
+
         c.setName("Christian Simpson");
+
         //test large values
+
         c.setMaxHealthPoints(9999);
         c.setCurrHealthPoints(2567);
+
         //test uneven values
+
         m.setMaxHealthPoints(567);
         m.setCurrHealthPoints(222);
         w.printBattleWindow(c, m);
@@ -125,27 +137,26 @@ public class GameTester {
         //testing normal values
 
         /*Player c = new Player("Kara");
-        c.setMaxHealthPoints(1000);
-        c.setCurrHealthPoints(1000);
-        c.setAttackPoints(200);
-        c.setDefensePoints(33);
-        c.setSpeed(3001);
+        Equipment[] e = { new Equipment("Greatsword", 1),
+                new Equipment("Plate Mail", 1),
+                new Equipment("Ring of Defense", 1) };
+        c.setEquipment(e);
         WindowPrinter w = new WindowPrinter();
-        w.printPlayerStatus(c);
+        w.printPlayerStatus(c);*/
 
         //testing name and values > 9999
 
-        c.setName("Kara Kummer");
+        /*c.setName("Kara Kummer");
         c.setMaxHealthPoints(12330);
         c.setCurrHealthPoints(121);
         c.setAttackPoints(21);
         c.setDefensePoints(546);
         c.setSpeed(7);
-        w.printPlayerStatus(c);
+        w.printPlayerStatus(c);*/
 
         //testing name and values > 9999
 
-        c.setName("Jollof Jolloffson");
+        /*c.setName("Jollof Jolloffson");
         c.setAttackPoints(20000);
         c.setDefensePoints(33000);
         c.setSpeed(30010);
@@ -224,11 +235,22 @@ public class GameTester {
         game.setThePlayer(c);
         DungeonBuilder db = new DungeonBuilder();
         game.setDungeon(db.createNewDungeon(game.getThePlayer()));
-        System.out.println("\n" +game.getDungeon().getDungeonRooms().getSize());
+        String test = game.getDungeon().toString();
+        System.out.println("\n" + test);
         DungeonMapPrinter mapPrinter = new DungeonMapPrinter();
         mapPrinter.mapInfoFormatter(c, game.getDungeon());
         mapPrinter.mapLayoutFormatter(game.getDungeon());
+        mapPrinter.printFloorMap(game.getDungeon());
+        DungeonLevelProgression dLP = new DungeonLevelProgression();
+        game.getDungeon().setCurrentFloor(22);
+        game.getThePlayer().setFloorsCleared(game.getThePlayer().getFloorsCleared()+1);
+        game.setDungeon(dLP.progressNextLevel(game.getDungeon(), game.getThePlayer()));
+        test = game.getDungeon().toString();
+        System.out.println("\n" + test);
+        mapPrinter.mapInfoFormatter(c, game.getDungeon());
+        mapPrinter.mapLayoutFormatter(game.getDungeon());
         mapPrinter.printFloorMap(game.getDungeon());*/
+
 
         //testing endgame function
 

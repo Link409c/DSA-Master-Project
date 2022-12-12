@@ -65,21 +65,20 @@ public class WindowPrinter{
 	  * {}============================={}
 	  * {}==       S T A T U S       =={}
 	  * {}============================={}
-	  * {}===    J. J O L L O F     ==={} All Lines have 23 character width total including spaces
-	  * {}=== H P  ::  9999 / 9999  ==={} HP Line: 16 characters between colon and border | 7 between colon and slash | 8 between slash and border
-	  * {}===  A T K  ::       356  ==={} Stat Line: 12 characters between colon and border
+	  * {}===    J. J O L L O F     ==={}
+	  * {}=== H P  ::  9999 / 9999  ==={}
+	  * {}===  A T K  ::       356  ==={}
 	  * {}===  D E F  ::       124  ==={}
 	  * {}===  S P D  ::        76  ==={}
 	  * {}============================={}
 	  * {}===    E Q U I P P E D    ==={}
 	  * {}============================={}
 	  * {}=== W. S W O R D        X ==={}
-	  * {}=== M. H A U B E R K  VII ==={} Eqpt Line: 19 characters from border to equipment rank letter
+	  * {}=== M. H A U B E R K  VII ==={}
 	  * {}=== R I N G  O F  D.   IV ==={}
 	  * {}============================={}
      */
 	 //33 character width
-	 //TODO Finish formatting this window.
     public void printPlayerStatus(Player p) {
 		StringDisplayFormatter sdf = new StringDisplayFormatter();
 		int lineWidth = 25;
@@ -97,14 +96,34 @@ public class WindowPrinter{
 		System.out.printf("%n{}===  D E F  ::      %4s  ==={}", numValue);
 		numValue = sdf.valuesFormat(p.getSpeed());
 		System.out.printf("%n{}===  S P D  ::      %4s  ==={}", numValue);
+		numValue = sdf.valuesFormat(p.getLevel());
+		System.out.printf("%n{}===  L V L  ::      %4s  ==={}", numValue);
 		System.out.println("\n{}============================={}");
 		System.out.println("{}===    E Q U I P P E D    ==={}");
 		System.out.println("{}============================={}");
-		System.out.println("{}=== G. S W O R D        X ==={}");
-		System.out.println("{}=== M. H A U B E R K   IV ==={}");
-		System.out.println("{}=== V I T A L  P.     VII ==={}");
+		Equipment[] theEquipment = p.getEquipment();;
+		for (int i = 0; i < 3; i++) {
+			if (theEquipment[i] == null) {
+				System.out.println("{}===                       ==={}");
+			} else {
+				String equipment = theEquipment[i].getName();
+				String[] equipmentName = equipment.split(" ");
+				String rank = equipmentName[equipmentName.length - 1];
+				equipmentName[equipmentName.length - 1] = "";
+				StringBuilder stb = new StringBuilder();
+				for (int j = 0; j < equipmentName.length; j++) {
+					if (j == equipmentName.length - 1) {
+						stb.append(equipmentName[j]);
+					} else {
+						stb.append(equipmentName[j]).append(" ");
+					}
+				}
+				equipment = stb.toString();
+				equipment = sdf.spacedNameFormat(equipment);
+				System.out.printf("{}=== %-17S %3S ==={}%n", equipment, rank);
+			}
+		}
 		System.out.println("{}============================={}");
-
 	}
 
 	/**
@@ -130,6 +149,12 @@ public class WindowPrinter{
 		int lineWidth = 23;
 		String monsterName = sdf.spacedNameFormat(m.getName());
 		monsterName = sdf.centerString(lineWidth, monsterName);
+		String reward = "";
+		if(m.hasReward()) {
+			reward = sdf.spacedNameFormat(m.getReward().getName());
+		}
+		reward = sdf.centerString(lineWidth, reward);
+
 		System.out.println("\n{}============================={}");
 		System.out.println("{}==      V I C T O R Y!     =={}");
 		System.out.println("{}============================={}");
@@ -141,8 +166,6 @@ public class WindowPrinter{
 		System.out.println("{}===     R E W A R D S     ==={}");
 		System.out.println("{}============================={}");
 		System.out.println("{}===                       ==={}");
-		String reward = sdf.spacedNameFormat(m.getReward().getName());
-		reward = sdf. centerString(lineWidth, reward);
 		System.out.println("{}==="+ reward +"==={}");
 		System.out.println("{}===                       ==={}");
 		System.out.println("{}============================={}");

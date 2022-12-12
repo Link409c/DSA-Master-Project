@@ -37,24 +37,27 @@ public class Battle {
         int playerActualDefense = p.getDefensePoints();
         //while the player and monster are alive, battle
         BattleMenu battleMenu = new BattleMenu();
-        while (!p.isDead() && !m.isDead()) {
-            //print the battle window
-            w.printBattleWindow(p, m);
-            //if player is faster they go first
-            if (p.getSpeed() > m.getSpeed()) {
-                r = battleMenu.accessMenu(r);
-                p.setCurrHealthPoints(p.getCurrHealthPoints() - m.attack(p));
-            } else {
-                p.setCurrHealthPoints(p.getCurrHealthPoints() - m.attack(p));
-                if (!p.isDead()) {
+            while (p.isAlive() && m.isAlive()) {
+                //print the battle window
+                w.printBattleWindow(p, m);
+                //if player is faster they go first
+                if (p.getSpeed() > m.getSpeed()) {
                     r = battleMenu.accessMenu(r);
+                    if (m.isAlive()) {
+                        p.setCurrHealthPoints(p.getCurrHealthPoints() - m.attack(p));
+                    }
+
+                } else {
+                    p.setCurrHealthPoints(p.getCurrHealthPoints() - m.attack(p));
+                    if (p.isAlive()) {
+                        r = battleMenu.accessMenu(r);
+                    }
+                }
+                //reset defense if either being defended
+                if (p.getDefensePoints() != playerActualDefense) {
+                    p.setDefensePoints(playerActualDefense);
                 }
             }
-            //reset defense if either being defended
-            if (p.getDefensePoints() != playerActualDefense) {
-                p.setDefensePoints(playerActualDefense);
-            }
-        }
         return r;
     }
 

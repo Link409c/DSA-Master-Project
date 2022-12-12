@@ -5,6 +5,9 @@ import DungeonProject.View.MenuPrinter;
 
 import java.util.Scanner;
 
+/**
+ * End Game Menu allows user to control options when player is dead or quitting the game.
+ */
 public class EndGameMenu {
 
     public boolean accessMenu(){

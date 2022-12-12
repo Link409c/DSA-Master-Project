@@ -1,5 +1,9 @@
 package DungeonProject.Model;
 
+/**
+ * A Room is one of many containers making up a "floor" of a Dungeon. Can contain a Player,
+ * Monster, Item, and can be an Exit.
+ */
 public class Room{
 	
 	private Player thePlayer;

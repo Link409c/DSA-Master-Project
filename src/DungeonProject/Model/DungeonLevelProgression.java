@@ -3,6 +3,10 @@ package DungeonProject.Model;
 import DungeonProject.View.ScriptPrinter;
 import ManualLinkedList.ChristianHolder;
 
+/**
+ * Dungeon Level Progression is used to create a new "floor" of the dungeon when the
+ * player finds the exit.
+ */
 public class DungeonLevelProgression {
 
     /**
@@ -13,7 +17,7 @@ public class DungeonLevelProgression {
         Dungeon newDungeon = new Dungeon();
         //if new floor is < 99
         d.setCurrentFloor(d.getCurrentFloor() + 1);
-        if(d.getCurrentFloor() < 99) {
+        if(d.getCurrentFloor() != 99) {
             //print continueScript
             ScriptPrinter cont = new ScriptPrinter();
             cont.printExitFoundScript();
@@ -37,8 +41,11 @@ public class DungeonLevelProgression {
             newDungeon.setPlayerPosition(0);
             lastRooms.getHead().getE().setTreasure(thePotion);
             lastRooms.getHead().getNext().getE().setEnemy(theBoss);
+            lastRooms.getTail().getE().setTheExit(true);
             newDungeon.setCurrentFloor(99);
             newDungeon.setDungeonRooms(lastRooms);
+            ScriptPrinter finalScript = new ScriptPrinter();
+            finalScript.printFinalLevelScript();
         }
         return newDungeon;
     }

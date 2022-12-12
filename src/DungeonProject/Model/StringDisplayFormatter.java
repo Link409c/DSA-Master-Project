@@ -8,19 +8,6 @@ package DungeonProject.Model;
 public class StringDisplayFormatter {
 
     /**
-     * statusEquipmentFormat is used for equipment names in the status or reward window.
-     * @param equipmentName the name of the equipment.
-     * @return returns the string in the desired format.
-     * HP Line: 16 characters between colon and border | 7 between colon and slash | 8 between slash and border
-     * Stat Line: 12 characters between colon and border
-     * Eqpt Line: 19 characters from border to equipment rank letter
-     */
-    public String statusEquipmentFormat(String equipmentName){
-        //code
-        return null;
-    }
-
-    /**
      * spacedNameFormat is used for names in the display windows. It will format the string as follows:
      * input: Christian output: c h r i s t i a n
      * input: Christian Simpson output: c. s i m p s o n

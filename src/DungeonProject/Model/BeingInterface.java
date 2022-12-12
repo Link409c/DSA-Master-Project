@@ -8,7 +8,7 @@ public interface BeingInterface{
     //defend, increasing defense and regain some hp
     void defend();
 
-    //check whether the being is dead
-    boolean isDead();
+    //check whether the being is alive or not
+    boolean isAlive();
 
 }

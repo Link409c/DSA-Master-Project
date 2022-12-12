@@ -14,7 +14,6 @@ public class MenuPrinter{
         System.out.println("{}================================================================{}");
         System.out.println("{}====   (1)  N E W  G A M E         == == ==   o            ooo  {}");
         System.out.println("{} ==    (2)  C O N T I N U E   *   *   ===o        ==        o   {}");
-        System.out.println("{}   ==  (3)  L O A D       ===    *        ==      o oo          {}");
         System.out.println("{}================================================================{}");
     }
 
@@ -38,9 +37,9 @@ public class MenuPrinter{
         System.out.println("\n{}================================================================{}");
         System.out.println("{}====                      B A T T L E                       ===={}");
         System.out.println("{}================================================================{}");
-        System.out.println("{}====   (1)  A T T A C K    @     == o=     I T E M S  (3)   ooo {}");
-        System.out.println("{} ==oo  	(2)  D E F E N D    ===o     R U N       (4)      o  {}");
-        System.out.println("{}   == o   0   ===      @       ==      o oo   * * =             {}");
+        System.out.println("{}====   (1)  A T T A C K    @     == o=       *              ooo {}");
+        System.out.println("{} ==oo  (2)  D E F E N D    ===o           *     oo      0       {}");
+        System.out.println("{}   ==  (3)  I T E M S     ===      @       ==      o oo   * *   {}");
         System.out.println("{}================================================================{}");
     }
 
