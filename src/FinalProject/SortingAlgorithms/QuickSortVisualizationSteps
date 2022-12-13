@@ -1,0 +1,58 @@
+1. given an array of generics
+
+    array = 2, 5, 3, 1, 7, 0, 8, 4
+
+2. choose the pivot as the last element
+
+    [2][5][3][1][7][0][8][4]
+                          p
+
+3. get left and right pointers
+
+    [2][5][3][1][7][0][8][4]
+     l                 r  p
+
+4. while left and right pointer are not equal, compare the elements to the pivot
+   a. if left > pivot and r < pivot, swap them and move the pointers inward
+   b. else if left < pivot, move left to the right
+   c. else if right > pivot, move right to the left
+
+   left is less than 4, so we move to case 2
+
+   [2][5][3][1][7][0][8][4]
+       l              r  p
+
+   now case 3 is reached,
+
+   [2][5][3][1][7][0][8][4]
+       l           r     p
+
+   now we swap the elements and move the pointers
+
+   [2][0][3][1][7][5][8][4]
+          l     r        p
+
+   comparing again, left is less so we move to case 2
+
+   [2][0][3][1][7][5][8][4]
+             l  r        p
+
+   finally we move the left pointer one last time
+
+   [2][0][3][1][7][5][8][4]
+                l        p
+                r
+   now we swap the left pointer element and the pivot element
+
+   [2][0][3][1][4][5][8][7]
+                l        p
+                r
+   so as we can see, every element to the left of 4 is smaller than 4.
+   and every element to the right of 4 is larger than 4.
+
+   now, we pass these sections of the array as arrays to a recursive call to the method,
+   along with the indices to split the array into the unsorted parts
+
+   left half is the left most index to pivot - 1
+
+   right half is pivot + 1 to length of the array
