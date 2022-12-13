@@ -86,7 +86,7 @@ public class SortingTester {
         setArray(randomizeArray());
 
         //need to debug quicksort. currently the recursion does not terminate.
-        QuickSort<Integer> quickSorter = new QuickSort<>(getArray());
+        /*QuickSort<Integer> quickSorter = new QuickSort<>(getArray());
         System.out.println("\nQuick Sort " + getArray().length + " elements: ");
 
         System.out.println("Unsorted List: ");
@@ -97,6 +97,18 @@ public class SortingTester {
         System.out.println("\nSorted List: ");
         quickSorter.printList();
 
+        setArray(randomizeArray());*/
+
+        ShellSort<Integer> shellSorter = new ShellSort<>(getArray());
+        System.out.println("\nShell Sort " + getArray().length + " elements: ");
+
+        System.out.println("Unsorted List: ");
+        shellSorter.printList();
+
+        shellSorter.sortArray(shellSorter.getList());
+
+        System.out.println("\nSorted List: ");
+        shellSorter.printList();
 
     }
 
